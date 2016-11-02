@@ -47,6 +47,9 @@ public class mnt_pago_empleado extends javax.swing.JDialog implements maintenanc
         txtFecha.setEditable(false);
         cmbArea.setEnabled(false);
         
+        btnMod.setVisible(false);
+        btnEliminar.setVisible(false);
+        
         
             
             //clean();
@@ -72,7 +75,8 @@ public class mnt_pago_empleado extends javax.swing.JDialog implements maintenanc
         txtFecha.setEditable(false);
         cmbArea.setEnabled(false);
         
-        
+        btnMod.setVisible(false);
+        btnEliminar.setVisible(false);
             
             //clean();
     }

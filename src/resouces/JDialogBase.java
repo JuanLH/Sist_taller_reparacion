@@ -5,6 +5,8 @@
  */
 package resouces;
 
+import java.awt.Dialog;
+import java.awt.Frame;
 import javax.swing.JDialog;
 import javax.swing.text.JTextComponent;
 
@@ -13,6 +15,20 @@ import javax.swing.text.JTextComponent;
  * @author juanlht
  */
 public class JDialogBase extends JDialog {
+
+    public JDialogBase(Frame frame, boolean bln) {
+        super(frame, bln);
+    }
+
+    public JDialogBase() {
+    }
+
+    public JDialogBase(Dialog dialog, boolean bln) {
+        super(dialog, bln);
+    }
+    
+    
+    
     public boolean isEmpy(JTextComponent txt){
         if(txt.getText().equals(""))
             return true;

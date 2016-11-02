@@ -5,6 +5,8 @@
  */
 package proyecto_taller;
 
+import mant.container;
+
 /**
  *
  * @author juanlht
@@ -16,6 +18,7 @@ public class ProyectoI_Taller {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        new container().setVisible(true);
     }
     
 }

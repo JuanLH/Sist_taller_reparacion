@@ -171,7 +171,7 @@ public class Empleados {
                         " id_area, sueldo, address,\n" +
                         " phone, entry_date, status\n" +
                         " FROM public.empleados \n" +
-                        " WHERE status - 0 AND "+condition;
+                        " WHERE status = 0 AND "+condition+";";
         ResultSet rs = dbase.execSelect(query);
         while(rs.next()){
             Empleados e = new Empleados();
