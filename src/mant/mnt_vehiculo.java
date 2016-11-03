@@ -6,17 +6,25 @@
 package mant;
 
 import database.entities.Cliente;
+import database.entities.Modelo_Vehiculo;
 import database.entities.Vehiculo;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.MutableComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import resouces.JDialogBase;
 import resouces.Mensajes;
 import resouces.Utilities;
+import resouces.components.ComboModelo;
 import resouces.interfaces.maintenance;
 
 /**
@@ -37,17 +45,85 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             Connection cnn = Utilities.getConection().getConection();
             cmbColor.setConn(cnn);
             cmbColor.fillCombo("name", "colors");
-
+            
+            
             cmbCombus.setConn(cnn);
             cmbCombus.fillCombo("name", "combustibles");
-
+            
+            
             cmbModelo.setConn(cnn);
             cmbModelo.fillCombo("name", "modelo_vehiculo");
             cmbModelo.closeConn();
+
         
         }catch(SQLException e){
-            
+            Mensajes.mensajeError(new ActionEvent(this, 1, "Combos"), 
+                    "ERROR LLENANDO LOS COMBOS");
         }
+        
+        txtYear.setLimit(4);
+        txtPlaca.setLimit(7);
+        txtCliente.setLimit(150);
+        
+    }
+    
+    public mnt_vehiculo(JDialogBase  parent) {
+        super(parent,true);
+        initComponents();
+        
+        try{
+            Connection cnn = Utilities.getConection().getConection();
+            cmbColor.setConn(cnn);
+            cmbColor.fillCombo("name", "colors");
+            
+            
+            cmbCombus.setConn(cnn);
+            cmbCombus.fillCombo("name", "combustibles");
+            
+            
+            cmbModelo.setConn(cnn);
+            cmbModelo.fillCombo("name", "modelo_vehiculo");
+            cmbModelo.closeConn();
+
+        
+        }catch(SQLException e){
+            Mensajes.mensajeError(new ActionEvent(this, 1, "Combos"), 
+                    "ERROR LLENANDO LOS COMBOS");
+        }
+        
+        txtYear.setLimit(4);
+        txtPlaca.setLimit(7);
+        txtCliente.setLimit(150);
+        
+    }
+    
+    public mnt_vehiculo(JFrame parent) {
+        super(parent,true);
+        initComponents();
+        
+        try{
+            Connection cnn = Utilities.getConection().getConection();
+            cmbColor.setConn(cnn);
+            cmbColor.fillCombo("name", "colors");
+            
+            
+            cmbCombus.setConn(cnn);
+            cmbCombus.fillCombo("name", "combustibles");
+            
+            
+            cmbModelo.setConn(cnn);
+            cmbModelo.fillCombo("name", "modelo_vehiculo");
+            cmbModelo.closeConn();
+
+        
+        }catch(SQLException e){
+            Mensajes.mensajeError(new ActionEvent(this, 1, "Combos"), 
+                    "ERROR LLENANDO LOS COMBOS");
+        }
+        
+        txtYear.setLimit(4);
+        txtPlaca.setLimit(7);
+        txtCliente.setLimit(150);
         
     }
 
@@ -82,6 +158,8 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         btnSalir = new Main.JlButton();
         txtYear = new Main.JlTextFields();
         cmbCombus = new Main.JlComboBox();
+        jButton1 = new javax.swing.JButton();
+        txtIdCliente = new Main.JlTextFields();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -98,6 +176,16 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         jlLabel6.setText("CLIENTE:");
 
         jlLabel7.setText("MANTENIMIENTO:");
+
+        cmbModelo.setEditable(true);
+        cmbModelo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cmbModeloKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbModeloKeyPressed(evt);
+            }
+        });
 
         btnSeleccionar.setText("SELECCIONAR");
         btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -158,6 +246,18 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
 
         txtYear.setKind(Main.KindTextField.NUMBER);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resouces/img/lupa.png"))); // NOI18N
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -168,14 +268,39 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(chkMantenimiento)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(chkMantenimiento))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(40, 40, 40)
+                                        .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 421, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(63, 63, 63)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(cmbCombus, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(0, 256, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
@@ -191,31 +316,13 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                                 .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2))
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cmbModelo, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
-                                    .addComponent(cmbColor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(63, 63, 63)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cmbCombus, javax.swing.GroupLayout.DEFAULT_SIZE, 172, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addContainerGap())
-                            .addComponent(txtCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,27 +331,33 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbCombus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chkMantenimiento))
-                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtYear, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cmbCombus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(chkMantenimiento)
+                            .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -256,7 +369,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPresent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
         );
 
         pack();
@@ -267,12 +380,45 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
-        // TODO add your handling code here:
-        
+       if(check()){
+           Vehiculo v = new Vehiculo();
+           v.setChapa(txtPlaca.getText());
+           v.setId_cliente(Integer.parseInt(txtIdCliente.getText()));
+           v.setId_color(cmbColor.getSelectedIndex()+1);
+           v.setId_combustible(cmbCombus.getSelectedIndex()+1);
+           v.setId_modelo(cmbModelo.getSelectedIndex()+1);
+           v.setMaintenance(chkMantenimiento.isSelected());
+           v.setYear(Integer.parseInt(txtYear.getText()));
+           
+           try {
+               v.insert(v);
+           } catch (SQLException ex) {
+               Logger.getLogger(mnt_vehiculo.class.getName()).
+                       log(Level.SEVERE, null, ex);
+               System.out.println(ex.getSQLState());
+           }
+           
+       }
     }//GEN-LAST:event_btnGrabarActionPerformed
 
     private void btnModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModActionPerformed
-        
+        if(check()){
+           Vehiculo v = new Vehiculo();
+           v.setChapa(txtPlaca.getText());
+           v.setId_cliente(Integer.parseInt(txtIdCliente.getText()));
+           v.setId_color(cmbColor.getSelectedIndex()+1);
+           v.setId_combustible(cmbCombus.getSelectedIndex()+1);
+           v.setId_modelo(cmbModelo.getSelectedIndex()+1);
+           v.setMaintenance(chkMantenimiento.isSelected());
+           v.setYear(Integer.parseInt(txtYear.getText()));
+           
+           try {
+               v.update(v);
+           } catch (SQLException ex) {
+               Logger.getLogger(mnt_vehiculo.class.getName()).
+                       log(Level.SEVERE, null, ex);
+           }
+        }
     }//GEN-LAST:event_btnModActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -282,6 +428,22 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
 
     private void tabVehiculoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabVehiculoMouseClicked
         // TODO add your handling code here:
+        selected_vehiculo.setChapa((String)tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 0));
+        selected_vehiculo.setId_modelo((int)tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 1));
+        selected_vehiculo.setYear((int) tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 2));
+        selected_vehiculo.setId_color((int) tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 3));
+        selected_vehiculo.setId_combustible((int) tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 4));
+        selected_vehiculo.setId_cliente((int) tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 5));
+        selected_vehiculo.setMaintenance((boolean) tabVehiculo.getModel()
+            .getValueAt(tabVehiculo.getSelectedRow(), 6));
+        
+        llenar_campos(selected_vehiculo);
         
     }//GEN-LAST:event_tabVehiculoMouseClicked
 
@@ -294,6 +456,29 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+        new mnt_cliente(this).setVisible(true);
+        txtIdCliente.setText(Integer.toString(Cliente.getCliente().getId()));
+        txtCliente.setText(Cliente.getCliente().getName());
+
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cmbModeloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbModeloKeyTyped
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_cmbModeloKeyTyped
+
+    private void cmbModeloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbModeloKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbModeloKeyPressed
 
     /**
      * @param args the command line arguments
@@ -332,12 +517,23 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
 
     @Override
     public boolean check() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(isEmpy(txtPlaca) || isEmpy(txtYear) || isEmpy(txtCliente)
+                || isEmpy(txtIdCliente)||
+                cmbModelo.getSelectedItem().equals(""))
+            return false;
+        else
+            return true;
     }
 
     @Override
     public void clean() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String txt="";
+        txtPlaca.setText(txt);
+        txtYear.setText(txt);
+        txtIdCliente.setText(txt);
+        txtCliente.setText(txt);
+        chkMantenimiento.setSelected(false);
+        
     }
 
     @Override
@@ -383,7 +579,8 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             cmbModelo.setSelectedIndex(v.getId_modelo()-1);
             txtYear.setText(Integer.toString(v.getYear()));
             cmbColor.setSelectedIndex(v.getId_color()-1);
-            cmbCombus.setSelectedIndex(v.getId_combustible());
+            cmbCombus.setSelectedIndex(v.getId_combustible()-1);
+            txtIdCliente.setText(Integer.toString(v.getId_cliente()));
             try {
                 txtCliente.setText(
                         (String) Cliente.get("name", v.getId_cliente()));
@@ -392,10 +589,9 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                         log(Level.SEVERE, null, ex);
             }
             
-            if(v.isMaintenance())
-                chkMantenimiento.setSelected(true);
-            else
-                chkMantenimiento.setSelected(false);
+            chkMantenimiento.setSelected(v.isMaintenance());
+            
+            
                         
             
             
@@ -414,6 +610,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     private Main.JlComboBox cmbColor;
     private Main.JlComboBox cmbCombus;
     private Main.JlComboBox cmbModelo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private Main.jlLabel jlLabel1;
     private Main.jlLabel jlLabel2;
@@ -424,6 +621,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     private Main.jlLabel jlLabel7;
     private javax.swing.JTable tabVehiculo;
     private Main.JlTextFields txtCliente;
+    private Main.JlTextFields txtIdCliente;
     private Main.JlTextFields txtPlaca;
     private Main.JlTextFields txtYear;
     // End of variables declaration//GEN-END:variables

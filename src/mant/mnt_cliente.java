@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import resouces.JDialogBase;
 import resouces.Mensajes;
@@ -27,8 +28,18 @@ public class mnt_cliente extends JDialogBase implements maintenance{
      * Creates new form mnt_cliente
      */
     
-    Cliente selected_client = new Cliente();
+    private Cliente selected_client = new Cliente();
     public mnt_cliente() {
+        initComponents();
+    }
+    
+    public mnt_cliente(JFrame parent) {
+        super(parent,true);
+        initComponents();
+    }
+    
+    public mnt_cliente(JDialogBase parent) {
+        super(parent,true);
         initComponents();
     }
 
@@ -63,13 +74,18 @@ public class mnt_cliente extends JDialogBase implements maintenance{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        txtNombre.setLimit(150);
+
         jlLabel1.setText("NOMBRE:");
 
         txtTel.setKind(Main.KindTextField.TELEPHONE);
+        txtTel.setLimit(12);
 
         jlLabel2.setText("TELEFONO:");
 
         jlLabel3.setText("DIRECCION:");
+
+        txtCorreo.setLimit(150);
 
         jlLabel4.setText("CORREO:");
 
@@ -228,6 +244,8 @@ public class mnt_cliente extends JDialogBase implements maintenance{
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
+        Cliente.setCliente(selected_client);
+        this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed

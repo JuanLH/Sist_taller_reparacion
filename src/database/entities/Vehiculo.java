@@ -21,6 +21,15 @@ public class Vehiculo {
     String chapa;
     int id_modelo,year,id_color,id_combustible,id_cliente;
     boolean maintenance;
+    private static Vehiculo vehiculo = new Vehiculo();
+
+    public static Vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public static void setVehiculo(Vehiculo vehiculo) {
+        Vehiculo.vehiculo = vehiculo;
+    }
     
     public String getChapa() {
         return chapa;
@@ -98,7 +107,7 @@ public class Vehiculo {
         p.setInt(5, v.getId_cliente());
         p.setBoolean(6, v.isMaintenance());
         p.setString(7, v.getChapa());
-        p.execute();
+        p.executeUpdate();
         p.close();
     }
     public static ArrayList<Vehiculo> select () throws SQLException{
@@ -112,13 +121,13 @@ public class Vehiculo {
         ResultSet rs = dbase.execSelect(query);
         while(rs.next()){
             Vehiculo v = new Vehiculo();
-            v.setChapa(rs.getString("v.chapa"));
-            v.setId_modelo(rs.getInt("v.id_modelo"));
-            v.setYear(rs.getInt("v.year"));
-            v.setId_color(rs.getInt("v.color"));
-            v.setId_combustible(rs.getInt("v.id_combustible"));
-            v.setId_cliente(rs.getInt("v.id_cliente"));
-            v.setMaintenance(rs.getBoolean("v.maintenance"));
+            v.setChapa(rs.getString("chapa"));
+            v.setId_modelo(rs.getInt("id_modelo"));
+            v.setYear(rs.getInt("year"));
+            v.setId_color(rs.getInt("color"));
+            v.setId_combustible(rs.getInt("id_combustible"));
+            v.setId_cliente(rs.getInt("id_cliente"));
+            v.setMaintenance(rs.getBoolean("maintenance"));
             list.add(v);
         }
         dbase.CerrarConexion();

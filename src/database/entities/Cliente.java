@@ -19,7 +19,17 @@ import resouces.Utilities;
 public class Cliente {
     int id;
     String name,telefono,address,email;
+    static Cliente cliente = new Cliente();
 
+    public static Cliente getCliente() {
+        return cliente;
+    }
+
+    public static void setCliente(Cliente cliente) {
+        Cliente.cliente = cliente;
+    }
+    
+    
     public int getId() {
         return id;
     }
