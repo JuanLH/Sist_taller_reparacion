@@ -1,4 +1,4 @@
-﻿create table areas(--S
+create table areas(--S
 	id serial not null primary key,
 	name varchar(50) not null unique
 );
@@ -21,7 +21,8 @@ create table clientes(--S
 	name varchar(150) not null,
 	telefono varchar(25) not null,
 	address varchar(800),
-	email varchar(100)
+	email varchar(100),
+	status int default 0
 );
 create table colors(--S
 	id serial not null primary key,
@@ -32,13 +33,13 @@ create table combustibles(--S
 	name varchar(50) not null unique
 );
 create table vehiculos(
-	chapa varchar(10) not null primary key,
+	chapa varchar(9) not null primary key,
 	id_modelo int not null constraint fk_veh_modelo references modelo_vehiculo(id),
 	year  int not null,
-	color int not null constraint fk_vehiculo_modelo references colors(id),
+	id_color int not null constraint fk_vehiculo_modelo references colors(id),
 	id_combustible int not null constraint fk_vehiculo_combustible references combustibles(id),
 	id_cliente int not null constraint fk_vehiculo_cliente references  clientes(id),
-	maintenance boolean not null default false
+	maintenance boolean default false
 );
 create table suplidores(--S
 	id serial not null primary key,
@@ -53,9 +54,10 @@ create table articulos(
 	name varchar(50) not null,
 	cost numeric(9,2) not null,
 	existencia int default 0,
-	punto_reorden int not null
-
+	punto_reorden int not null,
+	status int default 0
 );
+
 create table servicios(
 	id serial not null primary key,
 	name varchar(150) not null,
@@ -87,11 +89,11 @@ create table empleados(
 	name varchar(300) not null,
 	lastname varchar(500) not null,
 	id_area int not null constraint fk_empleado_area references areas(id),
-	sueldo numeric(7,1) not null,
+	sueldo numeric(9,1) not null,
 	address varchar(800) not null,
 	phone varchar(25) not null,
 	entry_date date not null,
-	status int not null
+	status int default 0
 );
 create table tipo_usuario(
 	id serial not null primary key,
@@ -101,7 +103,8 @@ create table usuarios(
 	id varchar(11) not null constraint fk_usuario_empleado references empleados(cedula) primary key,
 	usuario varchar(50) not null,
 	pass varchar(50) not null,
-	id_tipo int not null constraint fk_usuario_tipo references tipo_usuario(id)
+	id_tipo int not null constraint fk_usuario_tipo references tipo_usuario(id),
+	status int not null default 0
 );
 create table tipo_trans(--S
 	id serial not null primary key,
@@ -113,10 +116,10 @@ create table trans(
 	id_area int not null constraint fk_tran_area references areas(id),
 	fecha timestamp default current_timestamp,
 	cantidad int not null,
-	valor numeric(7,2) not null,
-	total numeric(9,2) not null,
+	valor numeric(8,1) not null,
+	total numeric(9,1) not null,
 	ref_tran varchar(25) not null,
-	id_resource varchar(25)
+	id_resource varchar(25) not null
 );
 create table cajas(
 	id serial not null primary key,
@@ -128,7 +131,7 @@ INSERT INTO public.tipo_usuario(tipo)
 	VALUES ('ADMINISTRADOR'),('CAJERO'),('TECNICO'),('VENDEDOR');
 
 INSERT INTO public.areas(name)
-    VALUES ('PINTURA'),('MECANICA GENERAL'),('DESABOLLADURA'),('TIENDA');
+    VALUES ('PINTURA'),('MECANICA GENERAL'),('DESABOLLADURA'),('TIENDA'),('AIRE ACONDICIONADO');
 
 INSERT INTO public.colors(name)
     VALUES ('ROJO'),('BLANCO'),('AMARILLO'),
@@ -144,6 +147,12 @@ INSERT INTO public.marca_vehiculo(name)
 
 INSERT INTO public.tipo_vehiculo(name)
     VALUES ('SEDAN'),('COMPACTO'),('JEEPETA'),('CAMIONETA'),('SPORT');
+
+INSERT INTO public.modelo_vehiculo(
+             id_marca_vehiculo, id_tipo_vehiculo, name)
+    VALUES (1,5,'COROLLA'),(1,5,'CAMRY'),(1,5,'CELICA'),(1,4,'HILUX'),
+    (2,5,'MAZDA2 SPORT'),(2,5,'MAZDA3 SPORT'),(2,1,'MAZDA2 SEDAN'),
+    (2,1,'MAZDA3 SEDAN'),(2, 3,'MAZDA CX-5'),(2,3,'MAZDA CX-3'),(2,4,'MAZDA BT-50');
 
 INSERT INTO public.tipo_trans(name)
    VALUES ('COMPRA ARTICULOS'),('PAGO EMPLEADO'),('COBROS POR SERVICIOS'),('VENTAS ARTICULOS');
