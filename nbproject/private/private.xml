@@ -3,12 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group name="Proyecto I">
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/database/entities/Modelo_Vehiculo.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/database/entities/Servicio.java</file>
             <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/container.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/database/entities/Vehiculo.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/mnt_servicio.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/mnt_vehiculo.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/mnt_orden.java</file>
         </group>
     </open-files>
 </project-private>
