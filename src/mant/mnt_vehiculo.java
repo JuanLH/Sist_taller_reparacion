@@ -46,14 +46,17 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             cmbColor.setConn(cnn);
             cmbColor.fillCombo("name", "colors");
             
+            cmbMarca.setConn(cnn);
+            cmbMarca.fillCombo("name", "marca_vehiculo");
+            
             
             cmbCombus.setConn(cnn);
             cmbCombus.fillCombo("name", "combustibles");
+            cmbCombus.closeConn();
             
-            
-            cmbModelo.setConn(cnn);
+            /*cmbModelo.setConn(cnn);
             cmbModelo.fillCombo("name", "modelo_vehiculo");
-            cmbModelo.closeConn();
+            cmbModelo.closeConn();*/
 
         
         }catch(SQLException e){
@@ -76,14 +79,17 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             cmbColor.setConn(cnn);
             cmbColor.fillCombo("name", "colors");
             
+            cmbMarca.setConn(cnn);
+            cmbMarca.fillCombo("name", "marca_vehiculo");
+            
             
             cmbCombus.setConn(cnn);
             cmbCombus.fillCombo("name", "combustibles");
+            cmbCombus.closeConn();
             
-            
-            cmbModelo.setConn(cnn);
+            /*cmbModelo.setConn(cnn);
             cmbModelo.fillCombo("name", "modelo_vehiculo");
-            cmbModelo.closeConn();
+            cmbModelo.closeConn();*/
 
         
         }catch(SQLException e){
@@ -106,14 +112,17 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             cmbColor.setConn(cnn);
             cmbColor.fillCombo("name", "colors");
             
+            cmbMarca.setConn(cnn);
+            cmbMarca.fillCombo("name", "marca_vehiculo");
+            
             
             cmbCombus.setConn(cnn);
             cmbCombus.fillCombo("name", "combustibles");
+            cmbCombus.closeConn();
             
-            
-            cmbModelo.setConn(cnn);
+            /*cmbModelo.setConn(cnn);
             cmbModelo.fillCombo("name", "modelo_vehiculo");
-            cmbModelo.closeConn();
+            cmbModelo.closeConn();*/
 
         
         }catch(SQLException e){
@@ -125,6 +134,22 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         txtPlaca.setLimit(7);
         txtCliente.setLimit(150);
         
+    }
+    
+    
+    private void llenar_modelos(int id_marca){
+        cmbModelo.removeAllItems();
+        try {
+            // TODO add your handling code here:
+            ArrayList<Modelo_Vehiculo> list  = 
+                    Modelo_Vehiculo.select(id_marca);
+            for(Modelo_Vehiculo m : list){
+                cmbModelo.addItem(m);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_vehiculo.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -160,6 +185,8 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         cmbCombus = new Main.JlComboBox();
         jButton1 = new javax.swing.JButton();
         txtIdCliente = new Main.JlTextFields();
+        jlLabel8 = new Main.jlLabel();
+        cmbMarca = new Main.JlComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -177,7 +204,16 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
 
         jlLabel7.setText("MANTENIMIENTO:");
 
-        cmbModelo.setEditable(true);
+        cmbModelo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cmbModeloMouseClicked(evt);
+            }
+        });
+        cmbModelo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbModeloActionPerformed(evt);
+            }
+        });
         cmbModelo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 cmbModeloKeyTyped(evt);
@@ -258,6 +294,22 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
             }
         });
 
+        jlLabel8.setText("MARCA:");
+
+        cmbMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMarcaActionPerformed(evt);
+            }
+        });
+        cmbMarca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                cmbMarcaKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                cmbMarcaKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -287,10 +339,13 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                                         .addGap(20, 20, 20)
                                         .addComponent(cmbColor, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(63, 63, 63)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jlLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(104, 104, 104)
+                                        .addComponent(cmbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(52, 52, 52)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -319,9 +374,12 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                             .addComponent(jScrollPane2))
                         .addGap(25, 25, 25))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(35, 35, 35)
+                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -331,6 +389,10 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -357,7 +419,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(chkMantenimiento)
                             .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -377,6 +439,8 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
+        Vehiculo.setVehiculo(selected_vehiculo);
+        this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
@@ -386,7 +450,9 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
            v.setId_cliente(Integer.parseInt(txtIdCliente.getText()));
            v.setId_color(cmbColor.getSelectedIndex()+1);
            v.setId_combustible(cmbCombus.getSelectedIndex()+1);
-           v.setId_modelo(cmbModelo.getSelectedIndex()+1);
+           v.setId_modelo(((Modelo_Vehiculo) cmbModelo
+                   .getItemAt(cmbModelo.getSelectedIndex())).getId());
+           
            v.setMaintenance(chkMantenimiento.isSelected());
            v.setYear(Integer.parseInt(txtYear.getText()));
            
@@ -408,7 +474,8 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
            v.setId_cliente(Integer.parseInt(txtIdCliente.getText()));
            v.setId_color(cmbColor.getSelectedIndex()+1);
            v.setId_combustible(cmbCombus.getSelectedIndex()+1);
-           v.setId_modelo(cmbModelo.getSelectedIndex()+1);
+           v.setId_modelo(((Modelo_Vehiculo) cmbModelo
+                   .getItemAt(cmbModelo.getSelectedIndex())).getId());
            v.setMaintenance(chkMantenimiento.isSelected());
            v.setYear(Integer.parseInt(txtYear.getText()));
            
@@ -479,6 +546,30 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
         // TODO add your handling code here:
         
     }//GEN-LAST:event_cmbModeloKeyPressed
+
+    private void cmbMarcaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbMarcaKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMarcaKeyTyped
+
+    private void cmbMarcaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cmbMarcaKeyPressed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbMarcaKeyPressed
+
+    private void cmbMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMarcaActionPerformed
+            llenar_modelos(cmbMarca.getSelectedIndex()+1);
+    }//GEN-LAST:event_cmbMarcaActionPerformed
+
+    private void cmbModeloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbModeloActionPerformed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_cmbModeloActionPerformed
+
+    private void cmbModeloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cmbModeloMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_cmbModeloMouseClicked
 
     /**
      * @param args the command line arguments
@@ -574,20 +665,29 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     @Override
     public void llenar_campos(Object e) {
         if(e instanceof Vehiculo){
+            
             Vehiculo v = (Vehiculo)e;
             txtPlaca.setText(v.getChapa());
-            cmbModelo.setSelectedIndex(v.getId_modelo()-1);
-            txtYear.setText(Integer.toString(v.getYear()));
-            cmbColor.setSelectedIndex(v.getId_color()-1);
-            cmbCombus.setSelectedIndex(v.getId_combustible()-1);
-            txtIdCliente.setText(Integer.toString(v.getId_cliente()));
+            
             try {
+                Modelo_Vehiculo mv;
+                mv = Modelo_Vehiculo.get(v.getId_modelo());
+                cmbMarca.setSelectedIndex(mv.getId_marca_vehiculo()-1);
+                llenar_modelos(mv.getId_marca_vehiculo());
                 txtCliente.setText(
                         (String) Cliente.get("name", v.getId_cliente()));
+                cmbModelo.setSelectedIndex(v.getId_modelo()-1);
             } catch (SQLException ex) {
                 Logger.getLogger(mnt_vehiculo.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
+            
+            
+            txtYear.setText(Integer.toString(v.getYear()));
+            cmbColor.setSelectedIndex(v.getId_color()-1);
+            cmbCombus.setSelectedIndex(v.getId_combustible()-1);
+            txtIdCliente.setText(Integer.toString(v.getId_cliente()));
+            
             
             chkMantenimiento.setSelected(v.isMaintenance());
             
@@ -609,6 +709,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     private javax.swing.JCheckBox chkMantenimiento;
     private Main.JlComboBox cmbColor;
     private Main.JlComboBox cmbCombus;
+    private Main.JlComboBox cmbMarca;
     private Main.JlComboBox cmbModelo;
     private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -619,6 +720,7 @@ public class mnt_vehiculo extends JDialogBase implements maintenance {
     private Main.jlLabel jlLabel5;
     private Main.jlLabel jlLabel6;
     private Main.jlLabel jlLabel7;
+    private Main.jlLabel jlLabel8;
     private javax.swing.JTable tabVehiculo;
     private Main.JlTextFields txtCliente;
     private Main.JlTextFields txtIdCliente;

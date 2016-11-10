@@ -66,17 +66,27 @@ create table servicios(
 	cost numeric(9,2) not null
 );
 create table estado_orden(--S
-	id int not null primary key,
+	id serial not null primary key,
 	name varchar(50) not null,
 	descripcion varchar(150) not null
 );
+
+INSERT INTO public.estado_orden(name, descripcion)
+    VALUES 
+('COTIZADO','SE CHEQUEA EL VEHICULO Y SE DEJA SABER EL COSTO AL CLIENTE'),
+('EN COLA','EL VEHICULO ESTA HACIENDO TURNO PARA SER REPARADO'),
+('EN REPARACION','EL VEHICULO ESTA SIENDO REPARADO'),
+('REPARADO','EL VEHICULO ESTA LISTO PARA LA SALIDA'),
+('FACTURADO','LA CUENTA DE ORDEN FUE SALDADA');
+
 create table ordenes(
 	id serial not null primary key,
 	id_servicio int not null constraint fk_orden_servicio references servicios(id),
 	id_vehiculo varchar(10) not null constraint fk_orden_vehiculo references vehiculos(chapa),
-	entry_date date not null,
+	descripcion varchar(500) not null,
+	entry_date date not null default current_timestamp,
 	departure_date date,
-	id_estado_orden int not null constraint ordenes_estado references estado_orden(id)
+	id_estado_orden int not null constraint ordenes_estado references estado_orden(id) default 0
 );
 create table articulos_utilizados(
 	id_orden int not null constraint fk_artU_orden references ordenes(id),

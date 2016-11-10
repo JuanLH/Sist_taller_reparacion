@@ -53,11 +53,16 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="jlLabel2" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="cmbModelo" min="-2" pref="140" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jlLabel2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jlLabel8" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="104" max="-2" attributes="0"/>
+                                      <Component id="cmbModelo" min="-2" pref="151" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="jlLabel5" min="-2" max="-2" attributes="0"/>
@@ -95,10 +100,15 @@
                       </Group>
                       <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jlLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
-                      <Component id="txtPlaca" min="-2" pref="151" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="cmbMarca" alignment="1" min="-2" pref="151" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jlLabel1" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="txtPlaca" min="-2" pref="151" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
@@ -113,13 +123,18 @@
                   <Component id="jlLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtPlaca" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jlLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbMarca" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="3" attributes="0">
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                       <Component id="jlLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cmbModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jlLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtYear" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -147,7 +162,7 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="90" max="32767" attributes="0"/>
+              <EmptySpace pref="53" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnMod" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -205,10 +220,9 @@
       </Properties>
     </Component>
     <Component class="Main.JlComboBox" name="cmbModelo">
-      <Properties>
-        <Property name="editable" type="boolean" value="true"/>
-      </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="cmbModeloMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbModeloActionPerformed"/>
         <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cmbModeloKeyTyped"/>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cmbModeloKeyPressed"/>
       </Events>
@@ -307,6 +321,18 @@
       </Events>
     </Component>
     <Component class="Main.JlTextFields" name="txtIdCliente">
+    </Component>
+    <Component class="Main.jlLabel" name="jlLabel8">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MARCA:"/>
+      </Properties>
+    </Component>
+    <Component class="Main.JlComboBox" name="cmbMarca">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbMarcaActionPerformed"/>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cmbMarcaKeyTyped"/>
+        <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="cmbMarcaKeyPressed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

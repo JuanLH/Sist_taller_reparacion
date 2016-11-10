@@ -134,6 +134,29 @@ public class Vehiculo {
         return list;
     }
     
+    public static Vehiculo get (String chapa) throws SQLException{
+        DB dbase= Utilities.getConection();
+        Vehiculo v = null;
+        String query = "SELECT v.chapa, v.id_modelo, v.year, v.color,\n" +
+        "v.id_combustible, v.id_cliente, v.maintenance\n" +
+        "FROM public.vehiculos v \n" +
+        "INNER JOIN public.clientes c \n" +
+        "ON c.id = v.id_cliente AND v.chapa = '"+chapa+"';";
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            v = new Vehiculo();
+            v.setChapa(rs.getString("chapa"));
+            v.setId_modelo(rs.getInt("id_modelo"));
+            v.setYear(rs.getInt("year"));
+            v.setId_color(rs.getInt("color"));
+            v.setId_combustible(rs.getInt("id_combustible"));
+            v.setId_cliente(rs.getInt("id_cliente"));
+            v.setMaintenance(rs.getBoolean("maintenance"));   
+        }
+        dbase.CerrarConexion();
+        return v;
+    }
+    
     
     
     

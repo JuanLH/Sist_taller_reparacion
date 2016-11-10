@@ -52,6 +52,10 @@ public class Modelo_Vehiculo {
         this.name = name;
     }
     
+    public String toString(){
+        return this.name;
+    }
+    
     /*==============================================================*/
     
     public void insert(Modelo_Vehiculo mod) throws SQLException{
@@ -104,6 +108,45 @@ public class Modelo_Vehiculo {
             list.add(mv);
         }
         return list;
+    }
+    
+    public static ArrayList<Modelo_Vehiculo> select(int id_marca) 
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        ArrayList<Modelo_Vehiculo> list = new ArrayList<>();
+        String query = "SELECT id, id_marca_vehiculo, "
+                + "id_tipo_vehiculo, name\n" +
+            "  FROM public.modelo_vehiculo where id_marca_vehiculo ="+id_marca+" ;";
+        
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            Modelo_Vehiculo mv = new Modelo_Vehiculo();
+            mv.setId(rs.getInt("id"));
+            mv.setId_marca_vehiculo(rs.getInt("id_marca_vehiculo"));
+            mv.setId_tipo_vehiculo(rs.getInt("id_tipo_vehiculo"));
+            mv.setName(rs.getString("name"));
+            list.add(mv);
+        }
+        return list;
+    }
+    
+    public static Modelo_Vehiculo get(int id_modelo) 
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        Modelo_Vehiculo mv= null;
+        String query = "SELECT id, id_marca_vehiculo, "
+                + "id_tipo_vehiculo, name\n" +
+            "  FROM public.modelo_vehiculo where id ="+id_modelo+" ;";
+        
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            mv = new Modelo_Vehiculo();
+            mv.setId(rs.getInt("id"));
+            mv.setId_marca_vehiculo(rs.getInt("id_marca_vehiculo"));
+            mv.setId_tipo_vehiculo(rs.getInt("id_tipo_vehiculo"));
+            mv.setName(rs.getString("name"));
+        }
+        return mv;
     }
     
     
