@@ -6,9 +6,12 @@
 package database.entities;
 
 import database.DB;
+import java.awt.event.ActionEvent;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import resouces.Mensajes;
 import resouces.Utilities;
 
 /**
@@ -53,6 +56,73 @@ public class Articulos_Utilizados {
     
     /*=======================================================*/
     
+    public void insert(Articulos_Utilizados au)throws SQLException{
+        int existencia  = (int)Articulo.get(au.getId_articulo(), "existencia");
+        
+        Articulo art = new Articulo();
+        
+        if(existencia>au.getCant()){
+            art.update(au.getId_articulo(), existencia-au.getCant());
+            DB dbase = Utilities.getConection();
+            String query = "INSERT INTO public.articulos_utilizados(\n" +
+                        "            id_orden, id_articulo, cant)\n" +
+                        "    VALUES (?, ?, ?);";
+            PreparedStatement p = DB.conexion.prepareStatement(query);
+
+            p.setInt(1, au.getId_orden());
+            p.setInt(2, au.getId_articulo());
+            p.setInt(3, au.getCant());
+
+            p.execute();  
+            p.close();
+        }
+        else{
+            Mensajes.mensajeInfo(new ActionEvent
+            (this, 1, "cantidad no es suficiente"), 
+                    "LA CANTIDAD DE EXISTENCIA NO ES SUFICIENTE");
+        }
+        
+    }
+    
+    public static void update(Articulos_Utilizados au)throws SQLException{
+        DB dbase = Utilities.getConection();
+        String query = "UPDATE public.articulos_utilizados\n" +
+                        "   SET  cant=?\n" +
+                        " WHERE id_orden=? and id_articulo=?;";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        
+        p.setInt(1, au.getId_orden());
+        p.setInt(2, au.getId_articulo());
+        p.setInt(3, au.getCant());
+        
+      
+        p.executeUpdate();
+        p.close();
+    }
+    
+    public static void delete(Articulos_Utilizados au)throws SQLException{
+        DB dbase = Utilities.getConection();
+        
+        int existencia  = (int)Articulo.get(au.getId_articulo(), "existencia");
+        
+        Articulo art = new Articulo();
+        System.out.println(existencia+"   --   "+au.getCant());
+        art.update(au.getId_articulo(), (existencia + au.getCant()));
+        
+        String query = "DELETE FROM public.articulos_utilizados\n" +
+                            " WHERE id_orden=? and id_articulo=?;";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        
+        p.setInt(1, au.getId_orden());
+        p.setInt(2, au.getId_articulo());
+      
+        p.executeUpdate();
+        p.close();
+    }
+    
+    
     public static ArrayList<Articulos_Utilizados> select(int id_orden) 
             throws SQLException{
         DB dbase = Utilities.getConection();
@@ -66,10 +136,10 @@ public class Articulos_Utilizados {
         ResultSet rs = dbase.execSelect(query);
         while(rs.next()){
             Articulos_Utilizados au = new Articulos_Utilizados();
-            au.setId_orden(rs.getInt("au.id_orden"));
-            au.setId_articulo(rs.getInt("au.id_articulo"));
-            au.setNombre_articulo(rs.getString("a.name"));
-            au.setId_cant(rs.getInt("au.cant"));
+            au.setId_orden(rs.getInt("id_orden"));
+            au.setId_articulo(rs.getInt("id_articulo"));
+            au.setNombre_articulo(rs.getString("name"));
+            au.setId_cant(rs.getInt("cant"));
             
             
             list.add(au);

@@ -6,10 +6,12 @@
 package database.entities;
 
 import database.DB;
+import java.awt.event.ActionEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import resouces.Mensajes;
 import resouces.Utilities;
 
 /**
@@ -20,6 +22,15 @@ public class Articulo {
     private int id,id_suplidor,existencia,punto_reorden,id_area;
     private String name;
     private Double cost;
+    private static Articulo articulo = new Articulo();
+
+    public static Articulo getArticulo() {
+        return articulo;
+    }
+
+    public static void setArticulo(Articulo articulo) {
+        Articulo.articulo = articulo;
+    }
 
     public int getId() {
         return id;
@@ -120,6 +131,28 @@ public class Articulo {
         
     }
     
+     public void  update(int id_articulo,int existencia) throws SQLException {
+        DB dbase = Utilities.getConection();
+        
+        String query = "UPDATE public.articulos\n" +
+                    "SET existencia=? WHERE id=?;"; 
+        
+            PreparedStatement p = DB.conexion.prepareStatement(query);
+            p.setInt(1, existencia);
+            p.setInt(2, id_articulo);
+            
+            p.executeUpdate();
+            p.close();
+           
+        
+        
+            
+           
+        
+           
+        
+    }
+    
     public void delete(Articulo a) throws SQLException{
         DB dbase = Utilities.getConection();
         String query = "UPDATE public.articulos\n" +
@@ -162,16 +195,15 @@ public class Articulo {
     
 
     //This method can be better 
-    /*public static Object get(int id,String columnName)
+    public static Object get(int id,String columnName)
             throws SQLException{
         
         DB dbase = Utilities.getConection();
-        Empleados emp = new Empleados();
-        String query = "SELECT  "+columnName+" " +
-                        " FROM public.empleados WHERE status = 0 " +
-                        " and cedula = '"+cedula+"' ";
+        
+        String query = "SELECT "+columnName+" \n" +
+                "  FROM public.articulos where id="+id+";";
         ResultSet rs = dbase.execSelect(query);
         rs.next();
         return rs.getObject(1);
-    }*/
+    }
 }

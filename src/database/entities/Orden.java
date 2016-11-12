@@ -86,7 +86,8 @@ public class Orden {
     public void update(Orden or) throws SQLException{
          DB dbase = Utilities.getConection();
         String query = "UPDATE public.ordenes\n" +
-                "   SET id_servicio=?, id_vehiculo=?,descripcion = ?\n" +
+                "   SET id_servicio=?, id_vehiculo=?,descripcion = ?,"
+                + "id_estado_orden = ? \n" +
                 " WHERE id=?;";
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
@@ -94,7 +95,8 @@ public class Orden {
         p.setInt(1, or.getId_servicio());
         p.setString(2, or.getId_vehiculo());
         p.setString(3, or.getDescripcion());
-        p.setInt(4,or.getId());
+        p.setInt(4, or.getId_estado_orden());
+        p.setInt(5,or.getId());
        
         p.executeUpdate();
         p.close();
