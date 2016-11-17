@@ -17,8 +17,19 @@ import resouces.Utilities;
  * @author juanlht
  */
 public class Caja {
-    int id,id_empleado,fondo,status;
+    static Caja caja = new Caja();
+    int id,fondo,status;
+    String id_empleado;
+    
+    public static Caja getCaja() {
+        return caja;
+    }
 
+    public static void setCaja(Caja caja) {
+        Caja.caja = caja;
+    }
+    
+    
     public int getStatus() {
         return status;
     }
@@ -35,11 +46,11 @@ public class Caja {
         this.id = id;
     }
 
-    public int getId_empleado() {
+    public String getId_empleado() {
         return id_empleado;
     }
 
-    public void setId_empleado(int id_empleado) {
+    public void setId_empleado(String id_empleado) {
         this.id_empleado = id_empleado;
     }
 
@@ -57,10 +68,10 @@ public class Caja {
         DB dbase = Utilities.getConection();
         String query = "INSERT INTO public.cajas(\n" +
                 "             id_empleado, fondo)\n" +
-                "    VALUES (?, ?, ?);";
+                "    VALUES (?, ?);";
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
-        p.setInt(1, c.getId_empleado());
+        p.setString(1, c.getId_empleado());
         p.setInt(2, c.getFondo());
        
        
@@ -75,7 +86,7 @@ public class Caja {
                 " WHERE id=?;";
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
-        p.setInt(1, c.getId_empleado());
+        p.setString(1, c.getId_empleado());
         p.setInt(2, c.getFondo());
         p.setInt(3, c.getId());
        
@@ -103,12 +114,12 @@ public class Caja {
         DB dbase = Utilities.getConection();
         ArrayList<Caja> list = new ArrayList<>();
         String query = "SELECT id, id_empleado, fondo , status \n" +
-                        "  FROM public.cajas;";
+                        "  FROM public.cajas where status = 0;";
         ResultSet rs = dbase.execSelect(query);
         while(rs.next()){
             Caja e = new Caja();
             e.setId(rs.getInt("id"));
-            e.setId_empleado(rs.getInt("id_empleado"));
+            e.setId_empleado(rs.getString("id_empleado"));
             e.setFondo(rs.getInt("fondo"));
             e.setStatus(rs.getInt("status"));
          

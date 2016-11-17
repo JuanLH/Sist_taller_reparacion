@@ -19,10 +19,19 @@ import resouces.Utilities;
  * @author juanlht
  */
 public class Orden {
+    static Orden orden = new Orden();
     int id,id_servicio,id_estado_orden;
     String id_vehiculo,descripcion;
     Date entry_date,departure_date;
 
+    public static Orden getOrden() {
+        return orden;
+    }
+
+    public static void setOrden(Orden orden) {
+        Orden.orden = orden;
+    }
+    
     public String getDescripcion() {
         return descripcion;
     }

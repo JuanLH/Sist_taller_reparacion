@@ -365,6 +365,7 @@ public class container extends javax.swing.JFrame {
 
     private void jMenuItem21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem21ActionPerformed
         // TODO add your handling code here:
+        new mnt_caja(this).setVisible(true);
     }//GEN-LAST:event_jMenuItem21ActionPerformed
 
     /**

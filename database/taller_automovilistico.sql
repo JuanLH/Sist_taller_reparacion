@@ -134,8 +134,10 @@ create table trans(
 create table cajas(
 	id serial not null primary key,
 	id_empleado varchar(11) not null constraint fk_caja_empleado references empleados(cedula),
-	fondo int not null
+	fondo int not null,
+	status int not null default 0
 );
+
 --INSERTIONS
 INSERT INTO public.tipo_usuario(tipo)
 	VALUES ('ADMINISTRADOR'),('CAJERO'),('TECNICO'),('VENDEDOR');
@@ -171,4 +173,42 @@ INSERT INTO public.estado_orden(id, name, descripcion)
     VALUES (1,'COTIZADO','EL VEHICULO FUE REVISADO Y COTIZADO PARA EL CLIENTE'),
     (2,'EN ESPERA','EL VEHICULO SE ENCUENTRA EN COLA DE ESPERA'),
     (3,'EN PROCESO','EL VEHICULO SE ENCUENTRA EN PROCESO DE PREPARACION'),
-    (4,'FACTURADO','EL VEHICULO FUE REPARADO CORRECTAMENTE Y SU FACTURA FUE SALDADA POR EL CLIENTE');
+    (4,'LISTO','EL VEHICULO SE ENCUENTRA EN PROCESO DE PREPARACION'),
+    (5,'FACTURADO','EL VEHICULO FUE REPARADO CORRECTAMENTE Y SU FACTURA FUE SALDADA POR EL CLIENTE');
+
+    /*Funcion para obtener el monto correspondiente al servicio para su facturacion*/
+CREATE OR REPLACE FUNCTION public.get_montoOrden(id_orden int)
+  RETURNS numeric AS
+$BODY$
+declare 
+reg_art record;
+status int;
+id_servicio int;
+monto_servicio int;
+monto_articulos numeric;
+begin
+	/*for reg in SELECT * FROM public.ordenes where id = 1 loop
+		Raise notice '%',reg.id_vehiculo;
+	end loop;*/
+	status = (SELECT id_estado_orden FROM public.ordenes where id =id_orden);
+	if(status =4 or status = 3 ) then 
+		monto_articulos = 0.0;
+		id_servicio = (SELECT o.id_servicio FROM public.ordenes o where id = id_orden);
+		monto_servicio = (SELECT cost from public.servicios where id = id_servicio);
+		
+		FOR reg_art in SELECT  au.cant,a.cost FROM public.articulos_utilizados au 
+		inner join articulos a on au.id_articulo= a.id 
+		inner join ordenes o on au.id_orden = o.id 
+		where au.id_orden = $1
+		loop
+			monto_articulos=monto_articulos+(reg_art.cant * reg_art.cost);
+		end loop;
+	end if;
+	raise notice '%',monto_articulos;
+	return monto_articulos+monto_servicio;
+end;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION public.prueba(text)
+  OWNER TO postgres;
