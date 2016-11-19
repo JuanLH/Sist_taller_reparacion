@@ -81,7 +81,6 @@ INSERT INTO public.estado_orden(name, descripcion)
 
 create table ordenes(
 	id serial not null primary key,
-	id_servicio int not null constraint fk_orden_servicio references servicios(id),
 	id_vehiculo varchar(10) not null constraint fk_orden_vehiculo references vehiculos(chapa),
 	descripcion varchar(500) not null,
 	entry_date date not null default current_timestamp,
@@ -94,6 +93,13 @@ create table articulos_utilizados(
 	cant int not null,
 	constraint pk_articulos_utilizados primary key(id_orden,id_articulo)
 );
+
+create table servicios_realizados(
+	id_orden int not null constraint fk_serv_orden references ordenes(id),
+	id_servicio int not null constraint fk_servicio references servicios(id),
+	constraint pk_servicios_realizados primary key(id_orden,id_servicio)
+);
+
 create table empleados(
 	cedula varchar(11) not null primary key,
 	name varchar(300) not null,
@@ -105,10 +111,12 @@ create table empleados(
 	entry_date date not null,
 	status int default 0
 );
+
 create table tipo_usuario(
 	id serial not null primary key,
 	tipo varchar(50)  not null
 );
+
 create table usuarios(
 	id varchar(11) not null constraint fk_usuario_empleado references empleados(cedula) primary key,
 	usuario varchar(50) not null,
@@ -212,3 +220,5 @@ $BODY$
   COST 100;
 ALTER FUNCTION public.prueba(text)
   OWNER TO postgres;
+
+

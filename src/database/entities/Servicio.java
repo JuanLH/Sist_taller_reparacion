@@ -20,7 +20,16 @@ public class Servicio {
     int id,id_area,status;
     String name,descripcion;
     Double cost;
+    static Servicio servicio = new Servicio();
 
+    public static Servicio getServicio() {
+        return servicio;
+    }
+
+    public static void setServicio(Servicio servicio) {
+        Servicio.servicio = servicio;
+    }
+    
     public int getStatus() {
         return status;
     }
@@ -48,6 +57,22 @@ public class Servicio {
 
     public String getName() {
         return name;
+    }
+    
+    @Override
+    public String toString(){
+        return this.name;
+    }
+    
+    public boolean equals(Object obj){
+        if(obj instanceof Servicio){
+            Servicio ob = (Servicio)obj;
+            if(this.getId() == ob.getId()){
+                return true;
+            }
+        }
+        return false;
+        
     }
 
     public void setName(String name) {
@@ -142,5 +167,22 @@ public class Servicio {
             list.add(s);
         }
         return list;
+    }
+    
+    public static Servicio get(int id_servicio) throws SQLException{
+        DB dbase = Utilities.getConection();
+        String query = "SELECT id, name, id_area, descripcion, cost, status\n" +
+                        "  FROM public.servicios where id = "+id_servicio+";";
+        
+        ResultSet rs = dbase.execSelect(query);
+        rs.next();
+        Servicio ser = new Servicio();
+        ser.setId(rs.getInt(1));
+        ser.setName(rs.getString(2));
+        ser.setId_area(rs.getInt(3));
+        ser.setDescripcion(rs.getString(4));
+        ser.setCost(rs.getDouble(5));
+        ser.setStatus(rs.getInt(6));
+        return ser;
     }
 }

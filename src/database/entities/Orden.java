@@ -75,7 +75,7 @@ public class Orden {
         this.departure_date = departure_date;
     }
     /*=================================================================*/
-    public void insert(Orden or) throws SQLException{
+    public  void insert(Orden or) throws SQLException{
         DB dbase = Utilities.getConection();
         String query = "INSERT INTO public.ordenes(\n" +
             "  id_servicio, id_vehiculo,descripcion, id_estado_orden)\n" +
@@ -92,7 +92,7 @@ public class Orden {
         p.close();
     }
     /*this query will be execute when you need to change principal data*/
-    public void update(Orden or) throws SQLException{
+    public  void update(Orden or) throws SQLException{
          DB dbase = Utilities.getConection();
         String query = "UPDATE public.ordenes\n" +
                 "   SET id_servicio=?, id_vehiculo=?,descripcion = ?,"
@@ -111,7 +111,7 @@ public class Orden {
         p.close();
     }
     /*this query will be execute when the orden change her status*/
-    public void updateStatus(Orden or) throws SQLException{
+    public  void updateStatus(Orden or) throws SQLException{
          DB dbase = Utilities.getConection();
         String query = "UPDATE public.ordenes\n" +
             "   SET id_estado_orden=?\n" +
@@ -119,14 +119,14 @@ public class Orden {
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
         
-        p.setInt(1, or.getId_estado_orden()+1);
+        p.setInt(1, or.getId_estado_orden());
         p.setInt(2,or.getId());
        
         p.executeUpdate();
         p.close();
     }
    /*This query will be execute when the order ends*/
-    public void updateDepDate(Orden or) throws SQLException{
+    public  void updateDepDate(Orden or) throws SQLException{
          DB dbase = Utilities.getConection();
         String query = "UPDATE public.ordenes\n" +
             "   SET  departure_date=?, \n" +
@@ -135,13 +135,15 @@ public class Orden {
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
         
-        p.setInt(1, or.getId_estado_orden()+1);
-        p.setInt(2,or.getId());
+         p.setDate(1, or.getDeparture_date());
+        p.setInt(2, or.getId_estado_orden());
+       
+        p.setInt(3,or.getId());
        
         p.executeUpdate();
         p.close();
     }
-    public void delete(Orden or) 
+    public  void delete(Orden or) 
             throws SQLException{
         DB dbase = Utilities.getConection();
         String query = "DELETE FROM public.ordenes\n" +

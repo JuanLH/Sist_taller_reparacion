@@ -20,7 +20,7 @@ import resouces.Utilities;
 public class Trans {
     
     int id,id_tipo_trans,id_area,cantidad;
-    float valor,total;
+    Double valor,total;
     String ref_tran,id_resource;
     Timestamp fecha;
 
@@ -56,19 +56,19 @@ public class Trans {
         this.cantidad = cantidad;
     }
 
-    public float getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(float valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 
-    public float getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(float total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -99,7 +99,7 @@ public class Trans {
     /*======================================================================*/
     
     
-    public void insertPagoEmp(Trans t) throws SQLException{
+    public void insert(Trans t) throws SQLException{
         DB dbase = Utilities.getConection();
         String query = "INSERT INTO public.trans(id_tipo_trans, id_area, \n" +
                         "cantidad, valor, total, ref_tran,id_resource)\n" +
@@ -109,14 +109,18 @@ public class Trans {
         p.setInt(1, t.getId_tipo_trans());
         p.setInt(2, t.getId_area());
         p.setInt(3, t.getCantidad());
-        p.setFloat(4, t.getValor());
-        p.setFloat(5, t.getTotal());
+        p.setDouble(4, t.getValor());
+        p.setDouble(5, t.getTotal());
         p.setString(6, t.getRef_tran());
         p.setString(7, t.getId_resource());
         
         p.execute();
         p.close();
     }
+    
+    
+    
+    
     
     public void update(Empleados emp) throws SQLException {
         
@@ -142,7 +146,7 @@ public class Trans {
             t.setId(rs.getInt("id"));
             t.setId_area(rs.getInt("id_area"));
             t.setFecha(rs.getTimestamp("fecha"));
-            t.setTotal(rs.getFloat("total"));
+            t.setTotal(rs.getDouble("total"));
             t.setRef_tran(rs.getString("ref_tran"));
             t.setId_resource(rs.getString("id_resource"));
             

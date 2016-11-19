@@ -336,12 +336,12 @@ public class mnt_pago_empleado extends javax.swing.JDialog implements maintenanc
             t.setId_tipo_trans(2);
             t.setId_area(cmbArea.getSelectedIndex()+1);
             t.setCantidad(1);
-            t.setValor(Float.parseFloat(txtSueldo.getText()));
-            t.setTotal(Float.parseFloat(txtSueldo.getText()));
+            t.setValor(Double.parseDouble(txtSueldo.getText()));
+            t.setTotal(Double.parseDouble(txtSueldo.getText()));
             t.setRef_tran(txtNombreEmpleado.getText());
             t.setId_resource(txtCedula.getText());
             try{
-                t.insertPagoEmp(t);
+                t.insert(t);
                 clean();
             }
             catch(SQLException e){

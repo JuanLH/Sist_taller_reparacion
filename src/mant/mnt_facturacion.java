@@ -5,24 +5,57 @@
  */
 package mant;
 
+import com.sun.glass.events.KeyEvent;
+import database.DB;
+import database.entities.Articulo;
+import database.entities.Articulos_Utilizados;
 import database.entities.Empleados;
 import database.entities.Modelo;
 import database.entities.Orden;
+import database.entities.Servicio;
+import database.entities.Servicios_Realizados;
+import database.entities.Trans;
 import database.entities.Vehiculo;
+import java.awt.event.ActionEvent;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableModel;
+import static jdk.nashorn.internal.objects.NativeMath.round;
+import resouces.JDialogBase;
+import resouces.Mensajes;
+import resouces.Utilities;
 
 /**
  *
  * @author juanlht
  */
-public class mnt_facturacion extends javax.swing.JFrame {
+public class mnt_facturacion extends JDialogBase {
 
     /**
      * Creates new form mnt_facturacion
      */
+    Orden selected_orden = new Orden();
+    Articulos_Utilizados selected_Articulos_Utilizados =
+            new Articulos_Utilizados();
+    Servicios_Realizados selected_servicios_realizados =
+            new Servicios_Realizados();
+    
     public mnt_facturacion() {
+        initComponents();
+    }
+    
+    public mnt_facturacion(JDialogBase parent) {
+        super(parent,true);
+        initComponents();
+    }
+    
+     public mnt_facturacion(JFrame parent) {
+        super(parent,true);
         initComponents();
     }
 
@@ -41,8 +74,27 @@ public class mnt_facturacion extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtDEscripcion = new Main.JlTextArea();
         jButton1 = new javax.swing.JButton();
+        txtMonto = new Main.JlTextFields();
+        jlLabel2 = new Main.jlLabel();
+        jlButton1 = new Main.JlButton();
+        jlButton2 = new Main.JlButton();
+        panelArt1 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbServR = new javax.swing.JTable();
+        jlLabel6 = new Main.jlLabel();
+        panelArt = new javax.swing.JPanel();
+        btnAddArt = new Main.JlButton();
+        btnRemArt = new Main.JlButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbArtUtil = new javax.swing.JTable();
+        jlLabel5 = new Main.jlLabel();
+        txtArtName = new Main.JlTextFields();
+        txtCant = new Main.JlTextFields();
+        jButton2 = new javax.swing.JButton();
+        txtPorcent = new Main.JlTextFields();
+        jlLabel3 = new Main.jlLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jlLabel1.setText("ORDEN:");
 
@@ -62,36 +114,230 @@ public class mnt_facturacion extends javax.swing.JFrame {
             }
         });
 
+        jlLabel2.setText("MONTO TOTAL:");
+
+        jlButton1.setText("FACTURAR");
+        jlButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jlButton1ActionPerformed(evt);
+            }
+        });
+
+        jlButton2.setText("CANCELAR");
+        jlButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jlButton2ActionPerformed(evt);
+            }
+        });
+
+        panelArt1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        tbServR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbServRMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbServR);
+
+        jlLabel6.setText("SERVICIOS REALIZADOS");
+
+        javax.swing.GroupLayout panelArt1Layout = new javax.swing.GroupLayout(panelArt1);
+        panelArt1.setLayout(panelArt1Layout);
+        panelArt1Layout.setHorizontalGroup(
+            panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelArt1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        panelArt1Layout.setVerticalGroup(
+            panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArt1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(56, 56, 56))
+        );
+
+        panelArt.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        btnAddArt.setText("AGREGAR");
+        btnAddArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddArtActionPerformed(evt);
+            }
+        });
+
+        btnRemArt.setText("REMOVER");
+        btnRemArt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemArtActionPerformed(evt);
+            }
+        });
+
+        tbArtUtil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbArtUtilMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tbArtUtil);
+
+        jlLabel5.setText("ARTICULOS UTILIZADOS");
+
+        txtArtName.setEditable(false);
+        txtArtName.setName(""); // NOI18N
+        txtArtName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtArtNameActionPerformed(evt);
+            }
+        });
+
+        txtCant.setLimit(3);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resouces/img/lupa.png"))); // NOI18N
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        txtPorcent.setText("30");
+        txtPorcent.setKind(Main.KindTextField.NUMBER);
+        txtPorcent.setLimit(2);
+        txtPorcent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPorcentActionPerformed(evt);
+            }
+        });
+        txtPorcent.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtPorcentKeyPressed(evt);
+            }
+        });
+
+        jlLabel3.setText("%:");
+
+        javax.swing.GroupLayout panelArtLayout = new javax.swing.GroupLayout(panelArt);
+        panelArt.setLayout(panelArtLayout);
+        panelArtLayout.setHorizontalGroup(
+            panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelArtLayout.createSequentialGroup()
+                .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(panelArtLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelArtLayout.createSequentialGroup()
+                                .addComponent(txtArtName, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtCant, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(panelArtLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnAddArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRemArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        panelArtLayout.setVerticalGroup(
+            panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArtLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelArtLayout.createSequentialGroup()
+                        .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtArtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRemArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPorcent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(315, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(207, 207, 207)
+                                .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(12, 12, 12)
+                                .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtID, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         pack();
@@ -108,11 +354,193 @@ public class mnt_facturacion extends javax.swing.JFrame {
             Logger.getLogger(mnt_facturacion.class.getName()).log(Level.SEVERE, null, ex);
         }
         txtDEscripcion.setText(Orden.getOrden().getDescripcion());
+        selected_orden = Orden.getOrden();
+        fill_table_artUtil(Orden.getOrden().getId(),txtPorcent.getText());
+        fill_table_serR(Orden.getOrden().getId());
+        calcular_monto();
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnAddArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddArtActionPerformed
+        // TODO add your handling code here:
+        if(!(isEmpy(txtArtName) || isEmpy(txtCant))){
+
+            Articulos_Utilizados au = new Articulos_Utilizados();
+
+            au.setId_articulo(Articulo.getArticulo().getId());
+            au.setId_orden(selected_orden.getId());
+            au.setId_cant(Integer.parseInt(txtCant.getText()));
+
+            try {
+                au.insert(au);
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_orden.class.getName())
+                .log(Level.SEVERE, null, ex);
+            }
+        }
+        fill_table_artUtil(selected_orden.getId(),txtPorcent.getText());
+        txtArtName.setText("");
+        txtCant.setText("");
+    }//GEN-LAST:event_btnAddArtActionPerformed
+
+    private void btnRemArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemArtActionPerformed
+        try {
+            // TODO add your handling code here:
+            Articulos_Utilizados.delete(selected_Articulos_Utilizados);
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_orden.class.getName())
+            .log(Level.SEVERE, null, ex);
+        }
+        btnRemArt.setEnabled(false);
+        fill_table_artUtil(selected_orden.getId(),txtPorcent.getText());
+    }//GEN-LAST:event_btnRemArtActionPerformed
+
+    private void tbArtUtilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbArtUtilMouseClicked
+        selected_Articulos_Utilizados.setId_orden(selected_orden.getId());
+
+        selected_Articulos_Utilizados.setId_articulo((int)tbArtUtil.getModel().
+            getValueAt(tbArtUtil.getSelectedRow(), 0));
+
+        selected_Articulos_Utilizados.setId_cant((int)tbArtUtil.getModel().
+            getValueAt(tbArtUtil.getSelectedRow(), 2));
+
+        txtCant.setEnabled(true);
+        btnRemArt.setEnabled(true);
+
+    }//GEN-LAST:event_tbArtUtilMouseClicked
+
+    private void txtArtNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtArtNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtArtNameActionPerformed
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        new mnt_articulo(this).setVisible(true);
+        txtArtName.setText(Articulo.getArticulo().getName());
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void tbServRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbServRMouseClicked
+        // TODO add your handling code here:
+        selected_servicios_realizados.setId_orden(selected_orden.getId());
+
+        selected_servicios_realizados.setId_servicio((int)tbServR.getModel().
+            getValueAt(tbServR.getSelectedRow(), 0));
+
+       
+    }//GEN-LAST:event_tbServRMouseClicked
+
+    private void txtPorcentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPorcentActionPerformed
+
+    private void txtPorcentKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentKeyPressed
+        // TODO add your handling code here:
+        
+        if(evt.getKeyCode()==10){//enter
+            fill_table_artUtil(Orden.getOrden().getId(), txtPorcent.getText());
+            calcular_monto();
+        }
+    }//GEN-LAST:event_txtPorcentKeyPressed
+
+    private void jlButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton2ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jlButton2ActionPerformed
+
+    private void jlButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton1ActionPerformed
+        // TODO add your handling code here:
+        System.out.println(selected_orden.getId_estado_orden());
+        if(selected_orden.getId_estado_orden()!=4){
+            Mensajes.mensajeError(evt, "NO ES POSIBLE FACTURAR ESTA ORDEN\n"
+                    + "PORQUE AUN NO ESTA LISTA");
+            return;
+        }
+        int artRows = tbArtUtil.getModel().getRowCount();
+        int serRows = tbServR.getModel().getRowCount();
+        Double montoArt=0.0,montoServ=0.0;
+      
+        
+        for(int x=0; x<artRows; x++){
+            int id_area_articulo=0;
+            int id_articulo = (int)tbArtUtil.getModel().getValueAt(x, 0);
+            int cant = (int)tbArtUtil.getModel().getValueAt(x, 2);
+            Double precio = Double.parseDouble(""+tbArtUtil.getModel().getValueAt(x, 3));
+            
+            try {
+                id_area_articulo = (int)Articulo.get(id_articulo, "id_area");
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_facturacion.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            Trans t = new Trans();
+            t.setId_tipo_trans(4);//ventas de articulos
+            t.setId_area(id_area_articulo);
+            t.setCantidad(cant);
+            t.setValor(precio);
+            t.setTotal(cant*precio);
+            t.setRef_tran(Integer.toString(id_articulo));
+            t.setId_resource(Integer.toString(selected_orden.getId()));
+            try{
+                t.insert(t);
+                
+            }
+            catch(SQLException e){
+                Logger.getLogger(mnt_usuario.class.getName())
+                        .log(Level.SEVERE, null, e);
+                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
+            }
+            
+            
+        }
+        
+        for(int x=0; x<serRows; x++){  
+            int id_area_servicio = 0;
+            int id_servicio = (int)tbServR.getModel().getValueAt(x, 0);
+            Double precio = Double.parseDouble(""+tbServR.getModel().getValueAt(x, 2));
+            try {
+                id_area_servicio = Servicio.get(id_servicio).getId_area();
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_facturacion.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            
+            Trans t = new Trans();
+            t.setId_tipo_trans(3);//cobros por servicios
+            t.setId_area(id_area_servicio);
+            t.setCantidad(1);
+            t.setValor(precio);
+            t.setTotal(precio);
+            t.setRef_tran(Integer.toString(id_servicio));
+            t.setId_resource(Integer.toString(selected_orden.getId()));
+            try{
+                t.insert(t);     
+            }
+            catch(SQLException e){
+                Logger.getLogger(mnt_usuario.class.getName())
+                        .log(Level.SEVERE, null, e);
+                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
+            }
+            
+            selected_orden.setId_estado_orden(
+                    selected_orden.getId_estado_orden()+1);
+            selected_orden.setDeparture_date(Utilities.getCurrentDate());
+            try {
+                selected_orden.updateDepDate(selected_orden);
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_facturacion.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+    }//GEN-LAST:event_jlButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -150,11 +578,117 @@ public class mnt_facturacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private Main.JlButton btnAddArt;
+    private Main.JlButton btnRemArt;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private Main.JlButton jlButton1;
+    private Main.JlButton jlButton2;
     private Main.jlLabel jlLabel1;
+    private Main.jlLabel jlLabel2;
+    private Main.jlLabel jlLabel3;
+    private Main.jlLabel jlLabel5;
+    private Main.jlLabel jlLabel6;
+    private javax.swing.JPanel panelArt;
+    private javax.swing.JPanel panelArt1;
+    private javax.swing.JTable tbArtUtil;
+    private javax.swing.JTable tbServR;
+    private Main.JlTextFields txtArtName;
+    private Main.JlTextFields txtCant;
     private Main.JlTextArea txtDEscripcion;
     private Main.JlTextFields txtID;
     private Main.JlTextFields txtModelo;
+    private Main.JlTextFields txtMonto;
+    private Main.JlTextFields txtPorcent;
     // End of variables declaration//GEN-END:variables
+
+    public void fill_table_artUtil(int id_orden,String porcentaje_gan){
+        DecimalFormat df = new DecimalFormat("#");
+        
+        DefaultTableModel modelo = new DefaultTableModel();
+        String [] cols = {
+                "ID_ARTICULO", "NOMBRE", "CANT" , "PRECIO","TOTAL"};
+        
+        for (int i=0;i<cols.length;i++)
+            modelo.addColumn(cols[i]);
+        
+        ArrayList<Articulos_Utilizados> list = null;
+        
+        try { 
+            list = Articulos_Utilizados.select(id_orden);  
+        } catch (SQLException ex) {
+            Mensajes.mensajeError(new 
+        ActionEvent(this, 1,"Error llenando la tabla" ), "DB");
+            Logger.getLogger(mnt_empleado.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        
+        int k;
+            for(Articulos_Utilizados s : list){
+                k=0;
+                Object[] fila = new Object[5];
+                fila[k++]=(Object)s.getId_articulo();
+                fila[k++]=(Object)s.getNombre_articulo();
+                fila[k++]=(Object)s.getCant();
+                Float precio = Float.parseFloat(df.format((s.getCost()+s.getCost()*(Float.parseFloat("0."+porcentaje_gan)))));
+                fila[k++]=(Object)precio;
+                fila[k++]=(Object)(s.getCant()* precio);
+                modelo.addRow(fila);
+            }
+            tbArtUtil.setModel(modelo);
+    }
+    
+    public void fill_table_serR(int id_orden){
+        DefaultTableModel modelo = new DefaultTableModel();
+        String [] cols = {
+                "ID", "NOMBRE", "PRECIO"};
+        
+        for (int i=0;i<cols.length;i++)
+            modelo.addColumn(cols[i]);
+        
+        ArrayList<Servicio> list = null;
+        
+        try { 
+            list = Servicios_Realizados.select(id_orden);  
+        } catch (SQLException ex) {
+            Mensajes.mensajeError(new 
+        ActionEvent(this, 1,"Error llenando la tabla" ), "DB");
+            Logger.getLogger(mnt_empleado.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        
+        int k;
+            for(Servicio s : list){
+                k=0;
+                Object[] fila = new Object[3];
+                fila[k++]=(Object)s.getId();
+                fila[k++]=(Object)s.getName();
+                fila[k++]=(Object)s.getCost();
+                
+                modelo.addRow(fila);
+            }
+            tbServR.setModel(modelo);
+    }
+    
+    private void calcular_monto(){
+        int artRows = tbArtUtil.getModel().getRowCount();
+        int serRows = tbServR.getModel().getRowCount();
+        Double montoArt=0.0,montoServ=0.0;
+      
+        
+        for(int x=0; x<artRows; x++){
+            montoArt = montoArt+(Float)tbArtUtil.getModel().getValueAt(x, 4);
+        }
+        
+        for(int x=0; x<serRows; x++){
+            montoServ = montoServ+(Double)tbServR.getModel().getValueAt(x, 2);
+        }
+        
+        txtMonto.setText(Double.toString(montoArt+montoServ));
+        
+    }
+
 }

@@ -11,11 +11,14 @@ import database.entities.Cliente;
 import database.entities.Modelo;
 import database.entities.Orden;
 import database.entities.Servicio;
+import database.entities.Servicios_Realizados;
 import database.entities.Vehiculo;
 import java.awt.event.ActionEvent;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,21 +41,28 @@ public class mnt_orden extends JDialogBase implements maintenance {
     Orden selected_orden = new Orden();
     Articulos_Utilizados selected_Articulos_Utilizados =
             new Articulos_Utilizados();
+    Servicios_Realizados selected_servicios_realizados =
+            new Servicios_Realizados();
     
     public mnt_orden() {
         initComponents();
         rbCotizada.setSelected(true);
         panelArt.setEnabled(false);
-        try {
+        try 
+        {
             Connection cnn = Utilities.getConection().getConection();
             cmbEstado.setConn(cnn);
             cmbEstado.fillCombo("name","estado_orden");
-            cmbServicio.setConn(cnn);
-            cmbServicio.fillCombo("name","servicios");
-            cmbServicio.closeConn();
+            
+            
+            cmbEstado.closeConn();
+            
+
+
         } catch (SQLException ex) {
             Logger.getLogger(mnt_orden.class.getName()).log(Level.SEVERE, null, ex);
         }
+       
     }
     
     public mnt_orden(JDialogBase parent) {
@@ -60,13 +70,19 @@ public class mnt_orden extends JDialogBase implements maintenance {
         initComponents();
         rbCotizada.setSelected(true);
         panelArt.setEnabled(false);
-        try {
+        try 
+        {
             Connection cnn = Utilities.getConection().getConection();
             cmbEstado.setConn(cnn);
             cmbEstado.fillCombo("name","estado_orden");
-            cmbServicio.setConn(cnn);
-            cmbServicio.fillCombo("name","servicios");
-            cmbServicio.closeConn();
+            
+            
+            
+            
+            cmbEstado.closeConn();
+            
+
+
         } catch (SQLException ex) {
             Logger.getLogger(mnt_orden.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -77,13 +93,19 @@ public class mnt_orden extends JDialogBase implements maintenance {
         initComponents();
         rbCotizada.setSelected(true);
         panelArt.setEnabled(false);
-        try {
+        try 
+        {
             Connection cnn = Utilities.getConection().getConection();
             cmbEstado.setConn(cnn);
             cmbEstado.fillCombo("name","estado_orden");
-            cmbServicio.setConn(cnn);
-            cmbServicio.fillCombo("name","servicios");
-            cmbServicio.closeConn();
+            
+            
+            
+            
+            cmbEstado.closeConn();
+            
+
+
         } catch (SQLException ex) {
             Logger.getLogger(mnt_orden.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -100,10 +122,8 @@ public class mnt_orden extends JDialogBase implements maintenance {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jlLabel1 = new Main.jlLabel();
         jlLabel2 = new Main.jlLabel();
         jlLabel3 = new Main.jlLabel();
-        cmbServicio = new Main.JlComboBox();
         cmbEstado = new Main.JlComboBox();
         btnSeleccionar = new Main.JlButton();
         btnGrabar = new Main.JlButton();
@@ -126,6 +146,15 @@ public class mnt_orden extends JDialogBase implements maintenance {
         rbProceso = new javax.swing.JRadioButton();
         rbFacturadas = new javax.swing.JRadioButton();
         rbCotizada = new javax.swing.JRadioButton();
+        panelArt1 = new javax.swing.JPanel();
+        btnAddServ = new Main.JlButton();
+        btnRemServ = new Main.JlButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tbServR = new javax.swing.JTable();
+        jlLabel6 = new Main.jlLabel();
+        txtServName = new Main.JlTextFields();
+        txtServMonto = new Main.JlTextFields();
+        jButton3 = new javax.swing.JButton();
         panelArt = new javax.swing.JPanel();
         btnAddArt = new Main.JlButton();
         btnRemArt = new Main.JlButton();
@@ -137,8 +166,6 @@ public class mnt_orden extends JDialogBase implements maintenance {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jlLabel1.setText("SERVICIO:");
 
         jlLabel2.setText("VEHICULO:");
 
@@ -277,6 +304,97 @@ public class mnt_orden extends JDialogBase implements maintenance {
             }
         });
 
+        panelArt1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        btnAddServ.setText("AGREGAR");
+        btnAddServ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServActionPerformed(evt);
+            }
+        });
+
+        btnRemServ.setText("REMOVER");
+        btnRemServ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemServActionPerformed(evt);
+            }
+        });
+
+        tbServR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbServRMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tbServR);
+
+        jlLabel6.setText("SERVICIOS REALIZADOS");
+
+        txtServName.setEditable(false);
+        txtServName.setName(""); // NOI18N
+        txtServName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtServNameActionPerformed(evt);
+            }
+        });
+
+        txtServMonto.setLimit(3);
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resouces/img/lupa.png"))); // NOI18N
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelArt1Layout = new javax.swing.GroupLayout(panelArt1);
+        panelArt1.setLayout(panelArt1Layout);
+        panelArt1Layout.setHorizontalGroup(
+            panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelArt1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelArt1Layout.createSequentialGroup()
+                        .addComponent(btnAddServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnRemServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelArt1Layout.createSequentialGroup()
+                            .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txtServName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtServMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        panelArt1Layout.setVerticalGroup(
+            panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArt1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelArt1Layout.createSequentialGroup()
+                        .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtServName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtServMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRemServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(274, 274, 274))
+        );
+
         panelArt.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         btnAddArt.setText("AGREGAR");
@@ -345,14 +463,14 @@ public class mnt_orden extends JDialogBase implements maintenance {
                         .addComponent(txtCant, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         panelArtLayout.setVerticalGroup(
             panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArtLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelArtLayout.createSequentialGroup()
                         .addGroup(panelArtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -373,74 +491,68 @@ public class mnt_orden extends JDialogBase implements maintenance {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1078, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(txtVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(5, 5, 5)
-                                            .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(cmbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGap(99, 99, 99)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGap(24, 24, 24)
-                                    .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(99, 99, 99)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 552, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(328, 328, 328)
-                        .addComponent(rbCotizada)
                         .addGap(18, 18, 18)
-                        .addComponent(rbEspera)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbProceso)
-                        .addGap(18, 18, 18)
-                        .addComponent(rbListos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(rbFacturadas)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnPresent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(31, 31, 31))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 727, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rbCotizada)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbEspera)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbProceso)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(rbListos)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(rbFacturadas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnPresent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbServicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -455,27 +567,32 @@ public class mnt_orden extends JDialogBase implements maintenance {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jlLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnPresent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rbEspera)
-                    .addComponent(rbListos)
-                    .addComponent(rbProceso)
-                    .addComponent(rbFacturadas)
-                    .addComponent(rbCotizada))
-                .addGap(25, 25, 25))
+                            .addComponent(cmbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnMod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGrabar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnPresent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rbEspera)
+                            .addComponent(rbListos)
+                            .addComponent(rbProceso)
+                            .addComponent(rbFacturadas)
+                            .addComponent(rbCotizada))
+                        .addGap(25, 25, 25))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(panelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(28, 28, 28))))
         );
 
         pack();
@@ -483,12 +600,14 @@ public class mnt_orden extends JDialogBase implements maintenance {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
+        Orden.setOrden(selected_orden);
+        this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
         if(check()){
             Orden o = new Orden();
-            o.setId_servicio(cmbServicio.getSelectedIndex()+1);
+            
             o.setId_vehiculo(txtPlaca.getText());
             o.setDescripcion(txtDescripcion.getText());
             o.setId_estado_orden(cmbEstado.getSelectedIndex()+1);
@@ -509,7 +628,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
         if(check()){
             Orden o = new Orden();
             o.setId(selected_orden.getId());
-            o.setId_servicio(cmbServicio.getSelectedIndex()+1);
+            
             o.setId_vehiculo(txtPlaca.getText());
             o.setDescripcion(txtDescripcion.getText());
             o.setId_estado_orden(cmbEstado.getSelectedIndex()+1);
@@ -550,6 +669,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
             .getValueAt(tbOrdenes.getSelectedRow(), 6));
         llenar_campos(selected_orden);
         fill_table_artUtil(selected_orden.getId());
+        fill_table_serR(selected_orden.getId());
         if(selected_orden.getId_estado_orden()==3)
             panelArt.setVisible(true);
     }//GEN-LAST:event_tbOrdenesMouseClicked
@@ -569,7 +689,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
         if(check()){
             Orden o = new Orden();
             o.setId(selected_orden.getId());
-            o.setId_servicio(cmbServicio.getSelectedIndex()+1);
+            
             o.setId_vehiculo(txtPlaca.getText());
             o.setDescripcion(txtDescripcion.getText());
             o.setId_estado_orden(cmbEstado.getSelectedIndex()+1);
@@ -662,10 +782,10 @@ public class mnt_orden extends JDialogBase implements maintenance {
        selected_Articulos_Utilizados.setId_orden(selected_orden.getId());
        
        selected_Articulos_Utilizados.setId_articulo((int)tbArtUtil.getModel().
-               getValueAt(tbOrdenes.getSelectedRow(), 0));
+               getValueAt(tbArtUtil.getSelectedRow(), 0));
        
        selected_Articulos_Utilizados.setId_cant((int)tbArtUtil.getModel().
-               getValueAt(tbOrdenes.getSelectedRow(), 2));
+               getValueAt(tbArtUtil.getSelectedRow(), 2));
        
        txtCant.setEnabled(true);
        btnRemArt.setEnabled(true);
@@ -696,6 +816,63 @@ public class mnt_orden extends JDialogBase implements maintenance {
         // TODO add your handling code here:
         cmbEstado.setEnabled(true);
     }//GEN-LAST:event_rbCotizadaActionPerformed
+
+    private void btnAddServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServActionPerformed
+        // TODO add your handling code here:
+        if(!isEmpy(txtServName)){
+            Servicios_Realizados sr = new Servicios_Realizados();
+            sr.setId_orden(selected_orden.getId());
+            sr.setId_servicio(Servicio.getServicio().getId());
+            
+            try {
+                sr.insert(sr);
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_orden.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+        }
+        fill_table_serR(selected_orden.getId());
+    }//GEN-LAST:event_btnAddServActionPerformed
+
+    private void btnRemServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemServActionPerformed
+        // TODO add your handling code here:
+        Servicios_Realizados sr = new Servicios_Realizados();
+        sr.setId_orden(selected_orden.getId());
+        sr.setId_servicio(selected_servicios_realizados.getId_servicio());
+        try {
+            sr.delete(sr);
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_orden.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        fill_table_serR(selected_orden.getId());
+    }//GEN-LAST:event_btnRemServActionPerformed
+
+    private void tbServRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbServRMouseClicked
+        // TODO add your handling code here:
+        selected_servicios_realizados.setId_orden(selected_orden.getId());
+       
+       selected_servicios_realizados.setId_servicio((int)tbServR.getModel().
+               getValueAt(tbServR.getSelectedRow(), 0));
+       
+       
+       btnRemServ.setEnabled(true);
+       
+    }//GEN-LAST:event_tbServRMouseClicked
+
+    private void txtServNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtServNameActionPerformed
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        new mnt_servicio(this).setVisible(true);
+        txtServName.setText(Servicio.getServicio().getName());
+        txtServMonto.setText(Double.toString(Servicio.getServicio().getCost()));
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -734,28 +911,32 @@ public class mnt_orden extends JDialogBase implements maintenance {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Main.JlButton btnAddArt;
+    private Main.JlButton btnAddServ;
     private Main.JlButton btnEliminar;
     private Main.JlButton btnGrabar;
     private Main.JlButton btnLimpiar;
     private Main.JlButton btnMod;
     private Main.JlButton btnPresent;
     private Main.JlButton btnRemArt;
+    private Main.JlButton btnRemServ;
     private Main.JlButton btnSalir;
     private Main.JlButton btnSeleccionar;
     private javax.swing.ButtonGroup buttonGroup1;
     private Main.JlComboBox cmbEstado;
-    private Main.JlComboBox cmbServicio;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private Main.jlLabel jlLabel1;
+    private javax.swing.JScrollPane jScrollPane4;
     private Main.jlLabel jlLabel2;
     private Main.jlLabel jlLabel3;
     private Main.jlLabel jlLabel4;
     private Main.jlLabel jlLabel5;
+    private Main.jlLabel jlLabel6;
     private javax.swing.JPanel panelArt;
+    private javax.swing.JPanel panelArt1;
     private javax.swing.JRadioButton rbCotizada;
     private javax.swing.JRadioButton rbEspera;
     private javax.swing.JRadioButton rbFacturadas;
@@ -763,11 +944,14 @@ public class mnt_orden extends JDialogBase implements maintenance {
     private javax.swing.JRadioButton rbProceso;
     private javax.swing.JTable tbArtUtil;
     private javax.swing.JTable tbOrdenes;
+    private javax.swing.JTable tbServR;
     private Main.JlTextFields txtArtName;
     private Main.JlTextFields txtCant;
     private Main.JlTextFields txtCliente;
     private Main.JlTextArea txtDescripcion;
     private Main.JlTextFields txtPlaca;
+    private Main.JlTextFields txtServMonto;
+    private Main.JlTextFields txtServName;
     private Main.JlTextFields txtVehiculo;
     // End of variables declaration//GEN-END:variables
 
@@ -802,6 +986,38 @@ public class mnt_orden extends JDialogBase implements maintenance {
                 modelo.addRow(fila);
             }
             tbArtUtil.setModel(modelo);
+    }
+    
+    public void fill_table_serR(int id_orden){
+        DefaultTableModel modelo = new DefaultTableModel();
+        String [] cols = {
+                "ID", "NOMBRE", "PRECIO"};
+        
+        for (int i=0;i<cols.length;i++)
+            modelo.addColumn(cols[i]);
+        
+        ArrayList<Servicio> list = null;
+        
+        try { 
+            list = Servicios_Realizados.select(id_orden);  
+        } catch (SQLException ex) {
+            Mensajes.mensajeError(new 
+        ActionEvent(this, 1,"Error llenando la tabla" ), "DB");
+            Logger.getLogger(mnt_empleado.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+        
+        int k;
+            for(Servicio s : list){
+                k=0;
+                Object[] fila = new Object[3];
+                fila[k++]=(Object)s.getId();
+                fila[k++]=(Object)s.getName();
+                fila[k++]=(Object)s.getCost();
+                
+                modelo.addRow(fila);
+            }
+            tbServR.setModel(modelo);
     }
     
     @Override
@@ -874,11 +1090,12 @@ public class mnt_orden extends JDialogBase implements maintenance {
     public void llenar_campos(Object e) {
         if(e instanceof Orden){
             Orden or = (Orden)e;
-            cmbServicio.setSelectedIndex(or.getId_servicio()-1);
+            
             txtPlaca.setText(or.getId_vehiculo());
             txtDescripcion.setText(or.getDescripcion());
             
             try {
+                
                 txtVehiculo.setText(Modelo.get(or.getId_vehiculo()).getName());
                 txtCliente.setText((String)Cliente.get
                 ("name",Vehiculo.get(or.getId_vehiculo()).getId_cliente()));
@@ -888,9 +1105,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
             }
             cmbEstado.setSelectedIndex(or.getId_estado_orden()-1);
             
-            if((or.getId_estado_orden()-1)>=3){
-                
-            }
+            
         }
     }
 }

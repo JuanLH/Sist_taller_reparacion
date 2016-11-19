@@ -21,7 +21,25 @@ import resouces.Utilities;
 public class Articulos_Utilizados {
     int id_orden,id_articulo,cant;
     String nombre_articulo;
+    Double cost;
+    Double total;
 
+    public Double getTotal() {
+        return total;
+    }
+
+    public void setTotal(Double total) {
+        this.total = total;
+    }
+    
+    public Double getCost() {
+        return cost;
+    }
+
+    public void setCost(Double cost) {
+        this.cost = cost;
+    }
+    
     public int getId_orden() {
         return id_orden;
     }
@@ -128,7 +146,7 @@ public class Articulos_Utilizados {
         DB dbase = Utilities.getConection();
         ArrayList<Articulos_Utilizados> list = new ArrayList<>();
         String query = "select au.id_orden,au.id_articulo,a.name,"+ 
-        "au.cant from articulos_utilizados au\n" +
+        "au.cant,a.cost from articulos_utilizados au\n" +
         "inner join ordenes o on au.id_orden = o.id\n" +
         "inner join articulos a on a.id = au.id_articulo\n" +
         "where o.id = "+id_orden+" ;";
@@ -140,6 +158,7 @@ public class Articulos_Utilizados {
             au.setId_articulo(rs.getInt("id_articulo"));
             au.setNombre_articulo(rs.getString("name"));
             au.setId_cant(rs.getInt("cant"));
+            au.setCost(rs.getDouble("cost"));
             
             
             list.add(au);

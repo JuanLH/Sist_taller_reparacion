@@ -269,6 +269,8 @@ public class mnt_servicio extends JDialogBase implements maintenance {
 
     private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
         // TODO add your handling code here:
+        Servicio.setServicio(selected_servicio);
+        this.dispose();
     }//GEN-LAST:event_btnSeleccionarActionPerformed
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
