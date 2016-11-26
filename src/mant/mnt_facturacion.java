@@ -9,6 +9,7 @@ import com.sun.glass.events.KeyEvent;
 import database.DB;
 import database.entities.Articulo;
 import database.entities.Articulos_Utilizados;
+import database.entities.Caja;
 import database.entities.Empleados;
 import database.entities.Modelo;
 import database.entities.Orden;
@@ -17,15 +18,21 @@ import database.entities.Servicios_Realizados;
 import database.entities.Trans;
 import database.entities.Vehiculo;
 import java.awt.event.ActionEvent;
+import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.objects.NativeMath.round;
+import net.sf.jasperreports.engine.JRException;
+import reports.factura.FacturaDataSource;
+import resouces.AbstractJasperReports;
 import resouces.JDialogBase;
 import resouces.Mensajes;
 import resouces.Utilities;
@@ -93,6 +100,7 @@ public class mnt_facturacion extends JDialogBase {
         jButton2 = new javax.swing.JButton();
         txtPorcent = new Main.JlTextFields();
         jlLabel3 = new Main.jlLabel();
+        jlButton3 = new Main.JlButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -277,6 +285,13 @@ public class mnt_facturacion extends JDialogBase {
                 .addGap(6, 6, 6))
         );
 
+        jlButton3.setText("LIMPIAR");
+        jlButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jlButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -291,13 +306,15 @@ public class mnt_facturacion extends JDialogBase {
                                 .addGap(18, 18, 18)
                                 .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(207, 207, 207)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(97, 97, 97)
                                 .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
@@ -317,12 +334,12 @@ public class mnt_facturacion extends JDialogBase {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -336,8 +353,9 @@ public class mnt_facturacion extends JDialogBase {
                         .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(65, Short.MAX_VALUE))
+                        .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
@@ -357,7 +375,7 @@ public class mnt_facturacion extends JDialogBase {
         selected_orden = Orden.getOrden();
         fill_table_artUtil(Orden.getOrden().getId(),txtPorcent.getText());
         fill_table_serR(Orden.getOrden().getId());
-        calcular_monto();
+        txtMonto.setText(Double.toString(calcular_monto()));
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -445,17 +463,19 @@ public class mnt_facturacion extends JDialogBase {
         
         if(evt.getKeyCode()==10){//enter
             fill_table_artUtil(Orden.getOrden().getId(), txtPorcent.getText());
-            calcular_monto();
+            txtMonto.setText(Double.toString(calcular_monto()));
         }
     }//GEN-LAST:event_txtPorcentKeyPressed
 
     private void jlButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
+      
     }//GEN-LAST:event_jlButton2ActionPerformed
 
     private void jlButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton1ActionPerformed
         // TODO add your handling code here:
+        int count= 0;
         System.out.println(selected_orden.getId_estado_orden());
         if(selected_orden.getId_estado_orden()!=4){
             Mensajes.mensajeError(evt, "NO ES POSIBLE FACTURAR ESTA ORDEN\n"
@@ -465,7 +485,6 @@ public class mnt_facturacion extends JDialogBase {
         int artRows = tbArtUtil.getModel().getRowCount();
         int serRows = tbServR.getModel().getRowCount();
         Double montoArt=0.0,montoServ=0.0;
-      
         
         for(int x=0; x<artRows; x++){
             int id_area_articulo=0;
@@ -489,7 +508,7 @@ public class mnt_facturacion extends JDialogBase {
             t.setId_resource(Integer.toString(selected_orden.getId()));
             try{
                 t.insert(t);
-                
+                count++;
             }
             catch(SQLException e){
                 Logger.getLogger(mnt_usuario.class.getName())
@@ -521,6 +540,7 @@ public class mnt_facturacion extends JDialogBase {
             t.setId_resource(Integer.toString(selected_orden.getId()));
             try{
                 t.insert(t);     
+                count++;
             }
             catch(SQLException e){
                 Logger.getLogger(mnt_usuario.class.getName())
@@ -540,7 +560,46 @@ public class mnt_facturacion extends JDialogBase {
             
             
         }
+        System.out.println(count);
+        if(count>0){
+            Trans t = new Trans();
+            t.setId_tipo_trans(5);//registro de caja
+            t.setId_area(6);//area general
+            t.setCantidad(1);
+            t.setValor(calcular_monto());
+            t.setTotal(calcular_monto());
+            t.setRef_tran(Integer.toString(Caja.getCaja().getId()));
+            t.setId_resource(Integer.toString(selected_orden.getId()));
+            try{
+                t.insert(t);     
+            }
+            catch(SQLException e){
+                Logger.getLogger(mnt_usuario.class.getName())
+                        .log(Level.SEVERE, null, e);
+                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
+            }
+            
+            InputStream path = this.getClass().getResourceAsStream("/reports/factura/Factura.jasper");
+            System.out.println("Path input stream---> "+path.toString());
+            FacturaDataSource datasource = new FacturaDataSource(selected_orden.getId());
+            Map parametros = new HashMap();
+            parametros.put("TOTAL_PAGAR",Double.toString(calcular_monto()));
+            AbstractJasperReports jasper = null;
+            try {
+                jasper = new AbstractJasperReports(datasource,path,parametros);
+            } catch (JRException ex) {
+                Logger.getLogger(mnt_facturacion.class.getName())
+                        .log(Level.SEVERE, null, ex);
+            }
+            jasper.showViewer();
+        }      
+        
     }//GEN-LAST:event_jlButton1ActionPerformed
+
+    private void jlButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton3ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_jlButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -587,6 +646,7 @@ public class mnt_facturacion extends JDialogBase {
     private javax.swing.JScrollPane jScrollPane4;
     private Main.JlButton jlButton1;
     private Main.JlButton jlButton2;
+    private Main.JlButton jlButton3;
     private Main.jlLabel jlLabel1;
     private Main.jlLabel jlLabel2;
     private Main.jlLabel jlLabel3;
@@ -673,7 +733,7 @@ public class mnt_facturacion extends JDialogBase {
             tbServR.setModel(modelo);
     }
     
-    private void calcular_monto(){
+    private double calcular_monto(){
         int artRows = tbArtUtil.getModel().getRowCount();
         int serRows = tbServR.getModel().getRowCount();
         Double montoArt=0.0,montoServ=0.0;
@@ -687,8 +747,20 @@ public class mnt_facturacion extends JDialogBase {
             montoServ = montoServ+(Double)tbServR.getModel().getValueAt(x, 2);
         }
         
-        txtMonto.setText(Double.toString(montoArt+montoServ));
         
+        return  montoArt+montoServ;
+    }
+    
+    private void clear(){
+        String txt = "";
+        txtArtName.setText(txt);
+        txtCant.setText(txt);
+        txtDEscripcion.setText(txt);
+        txtID.setText(txt);
+        txtModelo.setText(txt);
+        txtMonto.setText(txt);
+        tbArtUtil.setModel(new DefaultTableModel());
+        tbServR.setModel(new DefaultTableModel());
     }
 
 }

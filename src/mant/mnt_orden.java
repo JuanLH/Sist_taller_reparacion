@@ -655,18 +655,17 @@ public class mnt_orden extends JDialogBase implements maintenance {
         // TODO add your handling code here:
         selected_orden.setId((int)tbOrdenes.getModel()
             .getValueAt(tbOrdenes.getSelectedRow(), 0));
-        selected_orden.setId_servicio((int)tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 1));
+       
         selected_orden.setId_vehiculo((String) tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 2));
+            .getValueAt(tbOrdenes.getSelectedRow(), 1));
         selected_orden.setDescripcion((String) tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 3));
+            .getValueAt(tbOrdenes.getSelectedRow(), 2));
         selected_orden.setEntry_date((Date) tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 4));
+            .getValueAt(tbOrdenes.getSelectedRow(), 3));
         selected_orden.setId_estado_orden((int) tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 5));
+            .getValueAt(tbOrdenes.getSelectedRow(), 4));
         selected_orden.setDeparture_date((Date) tbOrdenes.getModel()
-            .getValueAt(tbOrdenes.getSelectedRow(), 6));
+            .getValueAt(tbOrdenes.getSelectedRow(), 5));
         llenar_campos(selected_orden);
         fill_table_artUtil(selected_orden.getId());
         fill_table_serR(selected_orden.getId());
@@ -1043,7 +1042,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
     public void fill_table(ActionEvent evt) {
         DefaultTableModel modelo = new DefaultTableModel();
         String [] cols = {
-                "ID", "SERVICIO", "VEHICULO","DESCRIPCION", "ENTRADA",
+                "ID", "VEHICULO","DESCRIPCION", "ENTRADA",
                 "ESTADO","SALIDA"};
         
         for (int i=0;i<cols.length;i++)
@@ -1073,9 +1072,8 @@ public class mnt_orden extends JDialogBase implements maintenance {
         int k;
             for(Orden s : list){
                 k=0;
-                Object[] fila = new Object[7];
+                Object[] fila = new Object[6];
                 fila[k++]=(Object)s.getId();
-                fila[k++]=(Object)s.getId_servicio();
                 fila[k++]=(Object)s.getId_vehiculo();
                 fila[k++]=(Object)s.getDescripcion();
                 fila[k++]=(Object)s.getEntry_date();

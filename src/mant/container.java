@@ -45,7 +45,6 @@ public class container extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem13 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
         jMenuItem15 = new javax.swing.JMenuItem();
@@ -106,14 +105,6 @@ public class container extends javax.swing.JFrame {
             }
         });
         jMenu4.add(jMenuItem9);
-
-        jMenuItem10.setText("AREAS");
-        jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem10ActionPerformed(evt);
-            }
-        });
-        jMenu4.add(jMenuItem10);
 
         jMenuItem13.setText("USUARIOS");
         jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
@@ -265,10 +256,6 @@ public class container extends javax.swing.JFrame {
         new mnt_orden(this).setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         // TODO add your handling code here:
         new mnt_suplidor(this).setVisible(true);
@@ -296,10 +283,12 @@ public class container extends javax.swing.JFrame {
 
     private void jMenuItem17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem17ActionPerformed
         // TODO add your handling code here:
+        new mnt_compras(this).setVisible(true);
     }//GEN-LAST:event_jMenuItem17ActionPerformed
 
     private void jMenuItem18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem18ActionPerformed
         // TODO add your handling code here:
+        new mnt_facturacion(this).setVisible(true);
     }//GEN-LAST:event_jMenuItem18ActionPerformed
 
     private void jMenuItem19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem19ActionPerformed
@@ -356,7 +345,6 @@ public class container extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
     private javax.swing.JMenuItem jMenuItem13;

@@ -156,6 +156,36 @@ public class Trans {
         return list;
     }
     
+    public static ArrayList<Trans> select(int id_orden) 
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        ArrayList<Trans> list = new ArrayList<>();
+        String query = "SELECT id,id_tipo_trans, id_area, \n" +
+        "fecha, cantidad, valor, \n" +
+        "total, ref_tran,id_resource\n" +
+        "  FROM public.trans \n" +
+        "  WHERE id_tipo_trans in (4,3) \n" +
+        "  and id_resource = '"+id_orden+"';";
+        
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            Trans t = new Trans();
+            t.setId(rs.getInt("id"));
+            t.setId_tipo_trans(rs.getInt("id_tipo_trans"));
+            t.setId_area(rs.getInt("id_area"));
+            t.setFecha(rs.getTimestamp("fecha"));
+            t.setCantidad(rs.getInt("cantidad"));
+            t.setValor(rs.getDouble("valor"));
+            t.setTotal(rs.getDouble("total"));
+            t.setRef_tran(rs.getString("ref_tran"));
+            t.setId_resource(rs.getString("id_resource"));
+            
+            list.add(t);
+        }
+        dbase.CerrarConexion();
+        return list;
+    }
+    
 
     //This method can be better 
     /*public static Object get(int id,String columnName)

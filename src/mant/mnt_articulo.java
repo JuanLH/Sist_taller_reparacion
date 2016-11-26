@@ -126,11 +126,22 @@ public class mnt_articulo extends JDialogBase implements maintenance {
 
         jlLabel2.setText("NOMBRE:");
 
+        txtNomArt.setLimit(100);
+
         jlLabel3.setText("COSTO:");
+
+        txtCosto.setKind(Main.KindTextField.NUMBER);
+        txtCosto.setLimit(5);
 
         jlLabel4.setText("EXISTENCIA:");
 
+        txtExistencia.setKind(Main.KindTextField.NUMBER);
+        txtExistencia.setLimit(4);
+
         jlLabel5.setText("PUNTO REORDEN:");
+
+        txtPuntReorden.setKind(Main.KindTextField.NUMBER);
+        txtPuntReorden.setLimit(2);
 
         btnSeleccionar.setText("SELECCIONAR");
         btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
@@ -392,14 +403,16 @@ public class mnt_articulo extends JDialogBase implements maintenance {
             .getValueAt(tabArt.getSelectedRow(), 0));
         selected_articulo.setId_suplidor((int) tabArt.getModel()
             .getValueAt(tabArt.getSelectedRow(), 1));
-        selected_articulo.setName((String) tabArt.getModel()
+        selected_articulo.setId_area((int) tabArt.getModel()
             .getValueAt(tabArt.getSelectedRow(), 2));
+        selected_articulo.setName((String) tabArt.getModel()
+            .getValueAt(tabArt.getSelectedRow(), 3));
         selected_articulo.setCost(Double.parseDouble(tabArt.getModel()
-            .getValueAt(tabArt.getSelectedRow(), 3).toString()));
+            .getValueAt(tabArt.getSelectedRow(), 4).toString()));
         selected_articulo.setExistencia((int) tabArt.getModel()
-            .getValueAt(tabArt.getSelectedRow(), 4));
-        selected_articulo.setPunto_reorden((int) tabArt.getModel()
             .getValueAt(tabArt.getSelectedRow(), 5));
+        selected_articulo.setPunto_reorden((int) tabArt.getModel()
+            .getValueAt(tabArt.getSelectedRow(), 6));
 
         llenar_campos(selected_articulo);
     }//GEN-LAST:event_tabArtMouseClicked
@@ -508,7 +521,7 @@ public class mnt_articulo extends JDialogBase implements maintenance {
     public void fill_table(ActionEvent evt) {
         DefaultTableModel modelo = new DefaultTableModel();
         String [] cols = {
-                "ID", "ID_SUPLIDOR", "NOMBRE", "COSTO", "EXISTENCIA",
+                "ID", "ID_SUPLIDOR","AREA", "NOMBRE", "COSTO", "EXISTENCIA",
                 "PUNTO_REORDEN"};
         
         for (int i=0;i<cols.length;i++)
@@ -526,9 +539,10 @@ public class mnt_articulo extends JDialogBase implements maintenance {
         int k;
             for(Articulo a : list){
                 k=0;
-                Object[] fila = new Object[9];
+                Object[] fila = new Object[7];
                 fila[k++]=(Object)a.getId();
                 fila[k++]=(Object)a.getId_suplidor();
+                fila[k++]=(Object)a.getId_area();
                 fila[k++]=(Object)a.getName();
                 fila[k++]=(Object)a.getCost();
                 fila[k++]=(Object)a.getExistencia();
