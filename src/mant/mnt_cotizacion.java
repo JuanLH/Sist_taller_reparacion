@@ -41,7 +41,7 @@ import resouces.Utilities;
  *
  * @author juanlht
  */
-public class mnt_facturacion extends JDialogBase {
+public class mnt_cotizacion extends JDialogBase {
 
     /**
      * Creates new form mnt_facturacion
@@ -51,19 +51,42 @@ public class mnt_facturacion extends JDialogBase {
             new Articulos_Utilizados();
     Servicios_Realizados selected_servicios_realizados =
             new Servicios_Realizados();
+    ArrayList<Trans> tList = new ArrayList<>();
+    ArrayList<Articulos_Utilizados> Artlist = new ArrayList<>();
+    ArrayList<Servicio> Servlist = new ArrayList<>();
     
-    public mnt_facturacion() {
+    public mnt_cotizacion() {
         initComponents();
+        
+        try {
+            selected_orden.insert_cotizacion(selected_orden);
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_cotizacion.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
     
-    public mnt_facturacion(JDialogBase parent) {
+    
+    public mnt_cotizacion(JDialogBase parent) {
         super(parent,true);
         initComponents();
+        try {
+            selected_orden.insert_cotizacion(selected_orden);
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_cotizacion.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
     
-     public mnt_facturacion(JFrame parent) {
+     public mnt_cotizacion(JFrame parent) {
         super(parent,true);
         initComponents();
+        try {
+            selected_orden.insert_cotizacion(selected_orden);
+        } catch (SQLException ex) {
+            Logger.getLogger(mnt_cotizacion.class.getName())
+                    .log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -75,12 +98,8 @@ public class mnt_facturacion extends JDialogBase {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jlLabel1 = new Main.jlLabel();
-        txtID = new Main.JlTextFields();
-        txtModelo = new Main.JlTextFields();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtDEscripcion = new Main.JlTextArea();
-        jButton1 = new javax.swing.JButton();
+        txtDescripcion = new Main.JlTextArea();
         txtMonto = new Main.JlTextFields();
         jlLabel2 = new Main.jlLabel();
         jlButton1 = new Main.JlButton();
@@ -89,6 +108,11 @@ public class mnt_facturacion extends JDialogBase {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbServR = new javax.swing.JTable();
         jlLabel6 = new Main.jlLabel();
+        btnAddServ = new Main.JlButton();
+        btnRemServ = new Main.JlButton();
+        txtServMonto = new Main.JlTextFields();
+        txtServName = new Main.JlTextFields();
+        jButton3 = new javax.swing.JButton();
         panelArt = new javax.swing.JPanel();
         btnAddArt = new Main.JlButton();
         btnRemArt = new Main.JlButton();
@@ -101,30 +125,19 @@ public class mnt_facturacion extends JDialogBase {
         txtPorcent = new Main.JlTextFields();
         jlLabel3 = new Main.jlLabel();
         jlButton3 = new Main.JlButton();
+        jlLabel4 = new Main.jlLabel();
+        jlLabel7 = new Main.jlLabel();
+        txtNombre = new Main.JlTextFields();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jlLabel1.setText("ORDEN:");
-
-        txtDEscripcion.setColumns(20);
-        txtDEscripcion.setRows(5);
-        jScrollPane1.setViewportView(txtDEscripcion);
-
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resouces/img/lupa.png"))); // NOI18N
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
-            }
-        });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        txtDescripcion.setColumns(20);
+        txtDescripcion.setRows(5);
+        jScrollPane1.setViewportView(txtDescripcion);
 
         jlLabel2.setText("MONTO TOTAL:");
 
-        jlButton1.setText("FACTURAR");
+        jlButton1.setText("IMPRIMIR");
         jlButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jlButton1ActionPerformed(evt);
@@ -149,6 +162,42 @@ public class mnt_facturacion extends JDialogBase {
 
         jlLabel6.setText("SERVICIOS REALIZADOS");
 
+        btnAddServ.setText("AGREGAR");
+        btnAddServ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddServActionPerformed(evt);
+            }
+        });
+
+        btnRemServ.setText("REMOVER");
+        btnRemServ.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemServActionPerformed(evt);
+            }
+        });
+
+        txtServMonto.setLimit(3);
+
+        txtServName.setEditable(false);
+        txtServName.setName(""); // NOI18N
+        txtServName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtServNameActionPerformed(evt);
+            }
+        });
+
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resouces/img/lupa.png"))); // NOI18N
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton3MouseClicked(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelArt1Layout = new javax.swing.GroupLayout(panelArt1);
         panelArt1.setLayout(panelArt1Layout);
         panelArt1Layout.setHorizontalGroup(
@@ -156,8 +205,20 @@ public class mnt_facturacion extends JDialogBase {
             .addGroup(panelArt1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(panelArt1Layout.createSequentialGroup()
+                            .addComponent(btnAddServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnRemServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelArt1Layout.createSequentialGroup()
+                        .addComponent(txtServName, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtServMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         panelArt1Layout.setVerticalGroup(
@@ -165,9 +226,20 @@ public class mnt_facturacion extends JDialogBase {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelArt1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jlLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelArt1Layout.createSequentialGroup()
+                        .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtServName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtServMonto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addGroup(panelArt1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnAddServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRemServ, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         panelArt.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -292,56 +364,66 @@ public class mnt_facturacion extends JDialogBase {
             }
         });
 
+        jlLabel4.setText("DESCRIPCION");
+
+        jlLabel7.setText("NOMBRE CLIENTE");
+
+        txtNombre.setLimit(50);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jlLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtMonto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(panelArt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(97, 97, 97)
-                                .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jlButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jlButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jlButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jlButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(74, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(12, 12, 12)
-                                .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 581, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                        .addComponent(panelArt1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(212, 212, 212)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(335, 335, 335)
+                        .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(356, 356, 356)
+                        .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jlLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(txtModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17)
+                .addComponent(jlLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jlLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelArt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -361,59 +443,28 @@ public class mnt_facturacion extends JDialogBase {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
-        // TODO add your handling code here:
-        mnt_orden frm  = new mnt_orden(this);
-        frm.setVisible(true);
-        txtID.setText(Integer.toString(Orden.getOrden().getId()));
-        try {
-            txtModelo.setText(Modelo.get(Orden.getOrden().getId_vehiculo()).getName());
-        } catch (SQLException ex) {
-            Logger.getLogger(mnt_facturacion.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        txtDEscripcion.setText(Orden.getOrden().getDescripcion());
-        selected_orden = Orden.getOrden();
-        fill_table_artUtil(Orden.getOrden().getId(),txtPorcent.getText());
-        fill_table_serR(Orden.getOrden().getId());
-        txtMonto.setText(Double.toString(calcular_monto()));
-    }//GEN-LAST:event_jButton1MouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
     private void btnAddArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddArtActionPerformed
         // TODO add your handling code here:
         if(!(isEmpy(txtArtName) || isEmpy(txtCant))){
 
             Articulos_Utilizados au = new Articulos_Utilizados();
-
             au.setId_articulo(Articulo.getArticulo().getId());
             au.setId_orden(selected_orden.getId());
             au.setId_cant(Integer.parseInt(txtCant.getText()));
-
-            try {
-                au.insert(au);
-            } catch (SQLException ex) {
-                Logger.getLogger(mnt_orden.class.getName())
-                .log(Level.SEVERE, null, ex);
-            }
+            au.setCost(Articulo.getArticulo().getCost());
+            Artlist.add(au);
         }
-        fill_table_artUtil(selected_orden.getId(),txtPorcent.getText());
+        fill_table_artUtil(txtPorcent.getText());
         txtArtName.setText("");
         txtCant.setText("");
+        txtMonto.setText(Double.toString(calcular_monto()));
     }//GEN-LAST:event_btnAddArtActionPerformed
 
     private void btnRemArtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemArtActionPerformed
-        try {
-            // TODO add your handling code here:
-            Articulos_Utilizados.delete(selected_Articulos_Utilizados);
-        } catch (SQLException ex) {
-            Logger.getLogger(mnt_orden.class.getName())
-            .log(Level.SEVERE, null, ex);
-        }
+        Artlist.remove(selected_Articulos_Utilizados);
         btnRemArt.setEnabled(false);
-        fill_table_artUtil(selected_orden.getId(),txtPorcent.getText());
+        fill_table_artUtil(txtPorcent.getText());
+        txtMonto.setText(Double.toString(calcular_monto()));
     }//GEN-LAST:event_btnRemArtActionPerformed
 
     private void tbArtUtilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbArtUtilMouseClicked
@@ -462,7 +513,7 @@ public class mnt_facturacion extends JDialogBase {
         // TODO add your handling code here:
         
         if(evt.getKeyCode()==10){//enter
-            fill_table_artUtil(Orden.getOrden().getId(), txtPorcent.getText());
+            fill_table_artUtil( txtPorcent.getText());
             txtMonto.setText(Double.toString(calcular_monto()));
         }
     }//GEN-LAST:event_txtPorcentKeyPressed
@@ -475,13 +526,18 @@ public class mnt_facturacion extends JDialogBase {
 
     private void jlButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlButton1ActionPerformed
         // TODO add your handling code here:
+        
+        if(txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty()){
+            Mensajes.mensajeError(evt, "NO DEBE DEJAR CAMPOS VACIOS");
+            return ;
+        }
+            
+        
+        
+        
         int count= 0;
         System.out.println(selected_orden.getId_estado_orden());
-        if(selected_orden.getId_estado_orden()!=4){
-            Mensajes.mensajeError(evt, "NO ES POSIBLE FACTURAR ESTA ORDEN\n"
-                    + "PORQUE AUN NO ESTA LISTA");
-            return;
-        }
+        
         int artRows = tbArtUtil.getModel().getRowCount();
         int serRows = tbServR.getModel().getRowCount();
         Double montoArt=0.0,montoServ=0.0;
@@ -495,7 +551,7 @@ public class mnt_facturacion extends JDialogBase {
             try {
                 id_area_articulo = (int)Articulo.get(id_articulo, "id_area");
             } catch (SQLException ex) {
-                Logger.getLogger(mnt_facturacion.class.getName()).
+                Logger.getLogger(mnt_cotizacion.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
             Trans t = new Trans();
@@ -506,17 +562,8 @@ public class mnt_facturacion extends JDialogBase {
             t.setTotal(cant*precio);
             t.setRef_tran(Integer.toString(id_articulo));
             t.setId_resource(Integer.toString(selected_orden.getId()));
-            try{
-                t.insert(t);
-                count++;
-            }
-            catch(SQLException e){
-                Logger.getLogger(mnt_usuario.class.getName())
-                        .log(Level.SEVERE, null, e);
-                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
-            }
-            
-            
+            tList.add(t);
+            count++;    
         }
         
         for(int x=0; x<serRows; x++){  
@@ -526,7 +573,7 @@ public class mnt_facturacion extends JDialogBase {
             try {
                 id_area_servicio = Servicio.get(id_servicio).getId_area();
             } catch (SQLException ex) {
-                Logger.getLogger(mnt_facturacion.class.getName()).
+                Logger.getLogger(mnt_cotizacion.class.getName()).
                         log(Level.SEVERE, null, ex);
             }
             
@@ -538,57 +585,27 @@ public class mnt_facturacion extends JDialogBase {
             t.setTotal(precio);
             t.setRef_tran(Integer.toString(id_servicio));
             t.setId_resource(Integer.toString(selected_orden.getId()));
-            try{
-                t.insert(t);     
-                count++;
-            }
-            catch(SQLException e){
-                Logger.getLogger(mnt_usuario.class.getName())
-                        .log(Level.SEVERE, null, e);
-                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
-            }
-            
-            selected_orden.setId_estado_orden(
-                    selected_orden.getId_estado_orden()+1);
-            selected_orden.setDeparture_date(Utilities.getCurrentDate());
-            try {
-                selected_orden.updateDepDate(selected_orden);
-            } catch (SQLException ex) {
-                Logger.getLogger(mnt_facturacion.class.getName()).
-                        log(Level.SEVERE, null, ex);
-            }
-            
+            tList.add(t);
+            count++;
             
         }
         System.out.println(count);
         if(count>0){
-            Trans t = new Trans();
-            t.setId_tipo_trans(5);//registro de caja
-            t.setId_area(6);//area general
-            t.setCantidad(1);
-            t.setValor(calcular_monto());
-            t.setTotal(calcular_monto());
-            t.setRef_tran(Integer.toString(Caja.getCaja().getId()));
-            t.setId_resource(Integer.toString(selected_orden.getId()));
-            try{
-                t.insert(t);     
-            }
-            catch(SQLException e){
-                Logger.getLogger(mnt_usuario.class.getName())
-                        .log(Level.SEVERE, null, e);
-                Mensajes.mensajeError(evt, "ERROR DE INSERSION EN DB");
-            }
+           
             
             InputStream path = this.getClass().getResourceAsStream("/reports/factura/Factura.jasper");
             System.out.println("Path input stream---> "+path.toString());
-            FacturaDataSource datasource = new FacturaDataSource(selected_orden.getId());
+            FacturaDataSource datasource = new FacturaDataSource(tList);
             Map parametros = new HashMap();
             parametros.put("TOTAL_PAGAR",Double.toString(calcular_monto()));
+            parametros.put("NOMBRE_CLIENTE","CLIENTE \n"+txtNombre.getText());
+            parametros.put("DESCRIPCION",txtDescripcion.getText());
+            parametros.put("COTIZACION", "COTIZACION # "+selected_orden.getId());
             AbstractJasperReports jasper = null;
             try {
                 jasper = new AbstractJasperReports(datasource,path,parametros);
             } catch (JRException ex) {
-                Logger.getLogger(mnt_facturacion.class.getName())
+                Logger.getLogger(mnt_cotizacion.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
             jasper.showViewer();
@@ -600,6 +617,46 @@ public class mnt_facturacion extends JDialogBase {
         // TODO add your handling code here:
         clear();
     }//GEN-LAST:event_jlButton3ActionPerformed
+
+    private void btnAddServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddServActionPerformed
+        // TODO add your handling code here:
+        if(!isEmpy(txtServName)){
+            Servicio sr = new Servicio();
+            sr.setId(Servicio.getServicio().getId());
+            sr.setName(Servicio.getServicio().getName());
+            sr.setCost(Servicio.getServicio().getCost());
+           
+            Servlist.add(sr);
+            
+        }
+        fill_table_serR(selected_orden.getId());
+        txtMonto.setText(Double.toString(calcular_monto()));
+        txtMonto.setText(Double.toString(calcular_monto()));
+    }//GEN-LAST:event_btnAddServActionPerformed
+
+    private void btnRemServActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemServActionPerformed
+        // TODO add your handling code here:
+        
+        Servicio s = new Servicio();
+        s.setId(selected_servicios_realizados.getId_servicio());
+        Servlist.remove(s);
+        fill_table_serR(selected_orden.getId());
+    }//GEN-LAST:event_btnRemServActionPerformed
+
+    private void txtServNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtServNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtServNameActionPerformed
+
+    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MouseClicked
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        new mnt_servicio(this).setVisible(true);
+        txtServName.setText(Servicio.getServicio().getName());
+        txtServMonto.setText(Double.toString(Servicio.getServicio().getCost()));
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -618,54 +675,59 @@ public class mnt_facturacion extends JDialogBase {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(mnt_facturacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mnt_cotizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(mnt_facturacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mnt_cotizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(mnt_facturacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mnt_cotizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(mnt_facturacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(mnt_cotizacion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new mnt_facturacion().setVisible(true);
+                new mnt_cotizacion().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Main.JlButton btnAddArt;
+    private Main.JlButton btnAddServ;
     private Main.JlButton btnRemArt;
-    private javax.swing.JButton jButton1;
+    private Main.JlButton btnRemServ;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private Main.JlButton jlButton1;
     private Main.JlButton jlButton2;
     private Main.JlButton jlButton3;
-    private Main.jlLabel jlLabel1;
     private Main.jlLabel jlLabel2;
     private Main.jlLabel jlLabel3;
+    private Main.jlLabel jlLabel4;
     private Main.jlLabel jlLabel5;
     private Main.jlLabel jlLabel6;
+    private Main.jlLabel jlLabel7;
     private javax.swing.JPanel panelArt;
     private javax.swing.JPanel panelArt1;
     private javax.swing.JTable tbArtUtil;
     private javax.swing.JTable tbServR;
     private Main.JlTextFields txtArtName;
     private Main.JlTextFields txtCant;
-    private Main.JlTextArea txtDEscripcion;
-    private Main.JlTextFields txtID;
-    private Main.JlTextFields txtModelo;
+    private Main.JlTextArea txtDescripcion;
     private Main.JlTextFields txtMonto;
+    private Main.JlTextFields txtNombre;
     private Main.JlTextFields txtPorcent;
+    private Main.JlTextFields txtServMonto;
+    private Main.JlTextFields txtServName;
     // End of variables declaration//GEN-END:variables
 
-    public void fill_table_artUtil(int id_orden,String porcentaje_gan){
+    public void fill_table_artUtil(String porcentaje_gan){
         DecimalFormat df = new DecimalFormat("#");
         
         DefaultTableModel modelo = new DefaultTableModel();
@@ -675,19 +737,12 @@ public class mnt_facturacion extends JDialogBase {
         for (int i=0;i<cols.length;i++)
             modelo.addColumn(cols[i]);
         
-        ArrayList<Articulos_Utilizados> list = null;
         
-        try { 
-            list = Articulos_Utilizados.select(id_orden);  
-        } catch (SQLException ex) {
-            Mensajes.mensajeError(new 
-        ActionEvent(this, 1,"Error llenando la tabla" ), "DB");
-            Logger.getLogger(mnt_empleado.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
+        
+        
         
         int k;
-            for(Articulos_Utilizados s : list){
+            for(Articulos_Utilizados s : Artlist){
                 k=0;
                 Object[] fila = new Object[5];
                 fila[k++]=(Object)s.getId_articulo();
@@ -709,19 +764,12 @@ public class mnt_facturacion extends JDialogBase {
         for (int i=0;i<cols.length;i++)
             modelo.addColumn(cols[i]);
         
-        ArrayList<Servicio> list = null;
         
-        try { 
-            list = Servicios_Realizados.select(id_orden);  
-        } catch (SQLException ex) {
-            Mensajes.mensajeError(new 
-        ActionEvent(this, 1,"Error llenando la tabla" ), "DB");
-            Logger.getLogger(mnt_empleado.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
+        
+        
         
         int k;
-            for(Servicio s : list){
+            for(Servicio s : Servlist){
                 k=0;
                 Object[] fila = new Object[3];
                 fila[k++]=(Object)s.getId();
@@ -755,9 +803,7 @@ public class mnt_facturacion extends JDialogBase {
         String txt = "";
         txtArtName.setText(txt);
         txtCant.setText(txt);
-        txtDEscripcion.setText(txt);
-        txtID.setText(txt);
-        txtModelo.setText(txt);
+        txtDescripcion.setText(txt);
         txtMonto.setText(txt);
         tbArtUtil.setModel(new DefaultTableModel());
         tbServR.setModel(new DefaultTableModel());

@@ -33,6 +33,12 @@ public class FacturaDataSource implements JRDataSource{
                     .log(Level.SEVERE, null, ex);
         }
     }
+    
+    public FacturaDataSource(ArrayList<Trans> list) {
+       
+            this.list = list;
+       
+    }
 
     
     

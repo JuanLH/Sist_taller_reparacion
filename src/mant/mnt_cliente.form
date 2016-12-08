@@ -132,7 +132,7 @@
     </Component>
     <Component class="Main.jlLabel" name="jlLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="NOMBRE:"/>
+        <Property name="text" type="java.lang.String" value="NOMBRE:*"/>
       </Properties>
     </Component>
     <Component class="Main.JlTextFields" name="txtTel">
@@ -145,7 +145,7 @@
     </Component>
     <Component class="Main.jlLabel" name="jlLabel2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="TELEFONO:"/>
+        <Property name="text" type="java.lang.String" value="TELEFONO:*"/>
       </Properties>
     </Component>
     <Component class="Main.jlLabel" name="jlLabel3">

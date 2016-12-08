@@ -95,6 +95,7 @@ public class Servicio {
         this.cost = cost;
     }
     
+    
     /*==================================================================*/
     
     public void insert(Servicio ser) throws SQLException{

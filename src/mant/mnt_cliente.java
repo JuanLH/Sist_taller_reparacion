@@ -76,12 +76,12 @@ public class mnt_cliente extends JDialogBase implements maintenance{
 
         txtNombre.setLimit(150);
 
-        jlLabel1.setText("NOMBRE:");
+        jlLabel1.setText("NOMBRE:*");
 
         txtTel.setKind(Main.KindTextField.TELEPHONE);
         txtTel.setLimit(12);
 
-        jlLabel2.setText("TELEFONO:");
+        jlLabel2.setText("TELEFONO:*");
 
         jlLabel3.setText("DIRECCION:");
 

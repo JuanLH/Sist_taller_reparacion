@@ -6,6 +6,7 @@
 package database.entities;
 
 import database.DB;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import resouces.Utilities;
@@ -51,6 +52,43 @@ public class Modelo {
     }
     
     /*==========================================================*/
+    
+    public  void insert(Modelo m) throws SQLException{
+        DB dbase = Utilities.getConection();
+        String query = "INSERT INTO public.modelo_vehiculo(\n" +
+            "            id_marca_vehiculo, id_tipo_vehiculo, name)\n" +
+            "    VALUES ( ?, ?, ?);";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        
+       
+        p.setInt(1, m.getId_marca());
+        p.setInt(2,m.getId_tipo_vehiculo());
+        p.setString(3, m.getName());
+        
+      
+        p.execute();
+        p.close();
+    }
+    
+    public  void update(Modelo m) throws SQLException{
+         DB dbase = Utilities.getConection();
+        String query = "UPDATE public.modelo_vehiculo\n" +
+            "   SET  id_marca_vehiculo=?, id_tipo_vehiculo=?, name=?\n" +
+            " WHERE id=?;";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        
+        
+        p.setInt(1, m.getId_marca());
+        p.setInt(2,m.getId_tipo_vehiculo());
+        p.setString(3, m.getName());
+        p.setInt(4, m.getId());
+        
+       
+        p.executeUpdate();
+        p.close();
+    }
     
     public static Modelo get(String id_vehiculo) throws SQLException{
         DB dbase= Utilities.getConection();

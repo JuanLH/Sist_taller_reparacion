@@ -85,6 +85,27 @@ public class Orden {
         p.execute();
         p.close();
     }
+    
+    public  void insert_cotizacion(Orden or) throws SQLException{
+        DB dbase = Utilities.getConection();
+        String query = "INSERT INTO public.ordenes(\n" +
+            "  id_estado_orden)\n" +
+            "    VALUES (?);";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        p.setInt(1, 1);//cotizado
+        
+      
+        p.execute();
+        
+        query = "select max(id) from ordenes;";
+        ResultSet rs = dbase.execSelect(query);
+        rs.next();
+        this.id = rs.getInt(1);
+        this.id_estado_orden = 1;
+        
+        p.close();
+    }
     /*this query will be execute when you need to change principal data*/
     public  void update(Orden or) throws SQLException{
          DB dbase = Utilities.getConection();
@@ -141,7 +162,7 @@ public class Orden {
             throws SQLException{
         DB dbase = Utilities.getConection();
         String query = "DELETE FROM public.ordenes\n" +
-                " WHERE where id=?;";
+                " WHERE  id=?;";
         
         PreparedStatement p = DB.conexion.prepareStatement(query);
         p.setInt(1, or.getId());

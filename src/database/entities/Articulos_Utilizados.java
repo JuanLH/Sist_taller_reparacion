@@ -72,6 +72,22 @@ public class Articulos_Utilizados {
         this.nombre_articulo = nombre_articulo;
     }
     
+    @Override
+    public boolean equals(Object obj){
+        Articulos_Utilizados au = null;
+        if(obj instanceof Articulos_Utilizados){
+            au = (Articulos_Utilizados)obj;
+            if(this.getId_articulo() == au.getId_articulo()
+                && this.getId_orden() == au.getId_orden())
+            return true;
+        }
+        
+        return false;
+            
+        
+        
+    }
+    
     /*=======================================================*/
     
     public void insert(Articulos_Utilizados au)throws SQLException{
