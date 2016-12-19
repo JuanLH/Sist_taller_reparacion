@@ -618,6 +618,8 @@ public class mnt_orden extends JDialogBase implements maintenance {
             }
 
         }
+        else
+            Mensajes.mensajeInfo(evt, "NO DEBEN HABER CAMPOS VACIOS");
         clean();
         fill_table(evt);
     }//GEN-LAST:event_btnGrabarActionPerformed
@@ -653,7 +655,6 @@ public class mnt_orden extends JDialogBase implements maintenance {
         // TODO add your handling code here:
         selected_orden.setId((int)tbOrdenes.getModel()
             .getValueAt(tbOrdenes.getSelectedRow(), 0));
-       
         selected_orden.setId_vehiculo((String) tbOrdenes.getModel()
             .getValueAt(tbOrdenes.getSelectedRow(), 1));
         selected_orden.setDescripcion((String) tbOrdenes.getModel()
@@ -683,7 +684,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        if(check()){
+        if(check() /*|| cmbEstado.getSelectedIndex()==0*/){
             Orden o = new Orden();
             o.setId(selected_orden.getId());
             
@@ -699,6 +700,8 @@ public class mnt_orden extends JDialogBase implements maintenance {
             }
 
         }
+        else
+            Mensajes.mensajeInfo(evt, "NO DEBEN HABER CAMPOS VACIOS");
         clean();
         fill_table(evt);
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -955,6 +958,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
     
     public void fill_table_artUtil(int id_orden){
         DefaultTableModel modelo = new DefaultTableModel();
+        tbArtUtil.setModel(modelo);
         String [] cols = {
                 "ID_ARTICULO", "NOMBRE", "CANT"};
         
@@ -987,6 +991,7 @@ public class mnt_orden extends JDialogBase implements maintenance {
     
     public void fill_table_serR(int id_orden){
         DefaultTableModel modelo = new DefaultTableModel();
+        tbServR.setModel(modelo);
         String [] cols = {
                 "ID", "NOMBRE", "PRECIO"};
         
@@ -1089,15 +1094,17 @@ public class mnt_orden extends JDialogBase implements maintenance {
             
             txtPlaca.setText(or.getId_vehiculo());
             txtDescripcion.setText(or.getDescripcion());
-            
-            try {
-                
-                txtVehiculo.setText(Modelo.get(or.getId_vehiculo()).getName());
-                txtCliente.setText((String)Cliente.get
-                ("name",Vehiculo.get(or.getId_vehiculo()).getId_cliente()));
-            } catch (SQLException ex) {
-                Logger.getLogger(mnt_orden.class.getName()).
-                        log(Level.SEVERE, null, ex);
+            if(or.getId_vehiculo()==null && or.getId_estado_orden()==1){}
+            else{
+                try {
+
+                    txtVehiculo.setText(Modelo.get(or.getId_vehiculo()).getName());
+                    txtCliente.setText((String)Cliente.get
+                    ("name",Vehiculo.get(or.getId_vehiculo()).getId_cliente()));
+                } catch (SQLException ex) {
+                    Logger.getLogger(mnt_orden.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
             }
             cmbEstado.setSelectedIndex(or.getId_estado_orden()-1);
             

@@ -95,6 +95,7 @@ public class Orden {
         PreparedStatement p = DB.conexion.prepareStatement(query);
         p.setInt(1, 1);//cotizado
         
+        
       
         p.execute();
         
@@ -121,6 +122,21 @@ public class Orden {
         p.setString(2, or.getDescripcion());
         p.setInt(3, or.getId_estado_orden());
         p.setInt(4,or.getId());
+       
+        p.executeUpdate();
+        p.close();
+    }
+    
+    public  void update_cotizacion(Orden or) throws SQLException{
+         DB dbase = Utilities.getConection();
+        String query = "UPDATE public.ordenes\n" +
+                "   SET descripcion = ? WHERE id=?;";
+        
+        PreparedStatement p = DB.conexion.prepareStatement(query);
+        
+        
+        p.setString(1, or.getDescripcion());
+        p.setInt(2,or.getId());
        
         p.executeUpdate();
         p.close();
@@ -201,6 +217,56 @@ public class Orden {
                 + "entry_date, departure_date, id_estado_orden\n" +
                 "  FROM public.ordenes where id_estado_orden = "+id_estado+";";
         
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            Orden s = new Orden();
+            s.setId(rs.getInt("id"));
+            s.setId_vehiculo(rs.getString("id_vehiculo"));
+            s.setDescripcion(rs.getString("descripcion"));
+            s.setEntry_date(rs.getDate("entry_date"));
+            s.setDeparture_date(rs.getDate("departure_date"));
+            s.setId_estado_orden(rs.getInt("id_estado_orden"));
+            
+            list.add(s);
+        }
+        return list;
+    }
+    
+    
+    public static ArrayList<Orden> getCotizado(Date d1,Date d2) 
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        ArrayList<Orden> list = new ArrayList<>();
+        String query = "SELECT id, id_vehiculo, entry_date, departure_date, "
+                + "id_estado_orden, \n" +
+                "       descripcion\n" +
+                "  FROM public.ordenes where id_estado_orden  = 1 \n" +
+                "  AND entry_date >= '"+d1.toString()+"' "
+                + "AND entry_date<= '"+d2.toString()+"';";
+        
+        ResultSet rs = dbase.execSelect(query);
+        while(rs.next()){
+            Orden s = new Orden();
+            s.setId(rs.getInt("id"));
+            s.setId_vehiculo(rs.getString("id_vehiculo"));
+            s.setDescripcion(rs.getString("descripcion"));
+            s.setEntry_date(rs.getDate("entry_date"));
+            s.setDeparture_date(rs.getDate("departure_date"));
+            s.setId_estado_orden(rs.getInt("id_estado_orden"));
+            
+            list.add(s);
+        }
+        return list;
+    }
+    
+    public static ArrayList<Orden> getCotizado()
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        ArrayList<Orden> list = new ArrayList<>();
+        String query = "SELECT id, id_vehiculo, entry_date, departure_date, id_estado_orden, \n" +
+        "       descripcion\n" +
+        "  FROM public.ordenes where id_estado_orden  = 1 ;";
+        System.out.print(query);
         ResultSet rs = dbase.execSelect(query);
         while(rs.next()){
             Orden s = new Orden();

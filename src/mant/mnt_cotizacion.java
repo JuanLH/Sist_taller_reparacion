@@ -17,7 +17,9 @@ import database.entities.Servicio;
 import database.entities.Servicios_Realizados;
 import database.entities.Trans;
 import database.entities.Vehiculo;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.InputStream;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.objects.NativeMath.round;
@@ -608,7 +611,27 @@ public class mnt_cotizacion extends JDialogBase {
                 Logger.getLogger(mnt_cotizacion.class.getName())
                         .log(Level.SEVERE, null, ex);
             }
+            /*JFileChooser fChooser = new JFileChooser();
+            fChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int result = fChooser.showSaveDialog(new Frame());
+            if(result == JFileChooser.APPROVE_OPTION){
+                File createdFile = fChooser.getSelectedFile();
+                String path_report = createdFile.getAbsolutePath()+File.separator+selected_orden.getId()+"_COTIZACION.pdf";
+                try {
+                    jasper.exportToPdf(path_report);
+                } catch (JRException ex) {
+                    Logger.getLogger(mnt_cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }*/
             jasper.showViewer();
+            String descripcion = txtNombre.getText()+"\n"+txtDescripcion.getText()+"\n PARA UN TOTAL DE: "
+                    +txtMonto.getText();
+            selected_orden.setDescripcion(descripcion);
+            try {
+                selected_orden.update_cotizacion(selected_orden);
+            } catch (SQLException ex) {
+                Logger.getLogger(mnt_cotizacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }      
         
     }//GEN-LAST:event_jlButton1ActionPerformed
