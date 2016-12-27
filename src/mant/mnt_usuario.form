@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -148,8 +148,14 @@
       </Events>
     </Component>
     <Component class="Main.JlTextFields" name="txtUsuario">
+      <Properties>
+        <Property name="limit" type="int" value="50"/>
+      </Properties>
     </Component>
     <Component class="Main.JlTextFields" name="txtClave">
+      <Properties>
+        <Property name="limit" type="int" value="50"/>
+      </Properties>
     </Component>
     <Component class="Main.JlComboBox" name="cmbTipo">
     </Component>

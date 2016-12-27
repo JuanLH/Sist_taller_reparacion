@@ -8,10 +8,12 @@
             <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/mnt_cotizacion.java</file>
         </group>
         <group>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/database/entities/Trans.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/reports/factura/FacturaDataSource.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/reports/informativos/reportesInformativos.java</file>
-            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/reports/informativos/RegGastoDataSource.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/login.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/container.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/container_tecnico.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/mant/container_cajero.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/database/entities/Usuario.java</file>
+            <file>file:/home/juanlht/NetBeansProjects/ProyectoI_Taller/src/resouces/Utilities.java</file>
         </group>
     </open-files>
 </project-private>

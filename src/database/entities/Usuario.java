@@ -124,6 +124,32 @@ public class Usuario {
         return list;
     }
     
+    public static Usuario login(String usuario,String pass)
+            throws SQLException{
+        DB dbase = Utilities.getConection();
+        String query = "SELECT id, usuario, pass, id_tipo\n" +
+            "  FROM public.usuarios WHERE usuario = '"+usuario+"' "
+                + "and pass = '"+pass+"' and status = 0;";
+        Usuario u = new Usuario();
+        ResultSet rs = dbase.execSelect(query);
+        
+        if(rs.next()){
+        
+            
+            u.setId(rs.getString("id"));
+            u.setUsuario(rs.getString("usuario"));
+            u.setPass(rs.getString("pass"));
+            u.setId_tipo(rs.getInt("id_tipo"));
+        
+        }
+        else{
+            u.setId("-1");
+        }
+            
+        
+        dbase.CerrarConexion();
+        return u;
+    }
     
     
 }

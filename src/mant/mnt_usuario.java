@@ -110,6 +110,10 @@ public class mnt_usuario extends javax.swing.JDialog implements maintenance{
             }
         });
 
+        txtUsuario.setLimit(50);
+
+        txtClave.setLimit(50);
+
         btnLimpiar.setText("NUEVO");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

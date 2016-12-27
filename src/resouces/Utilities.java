@@ -44,6 +44,18 @@ public class Utilities {
         
     }
     
+    public static Coordinates getCenterLocation(javax.swing.JFrame frm){
+        // Determine the new location of the window
+        int w = frm.getSize().width;
+        int h = frm.getSize().height;
+        int x = (getScreenSize().width-w)/2;
+        int y = (getScreenSize().height-h)/2;
+        
+        // Move the window
+        return new Coordinates(x,y);
+        
+    }
+    
     public static Date getCurrentDate(){
         DB dbase = Utilities.getConection();
         Date date=null;
